@@ -11,6 +11,7 @@ import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.createTask.CreateTaskActivity_;
+import com.example.ui.todos.model.weather.Weather;
 import com.google.android.material.button.MaterialButton;
 
 import org.androidannotations.annotations.AfterInject;
@@ -54,6 +55,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 .inject(this);
         presenter.setDbHelper(application.getApplicationComponent().dbHelper());
         presenter.getAllToDo();
+        presenter.setWeatherService(application.getWeatherComponent().weatherService());
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -86,6 +89,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public void notify(boolean success) {
         hideProgressLoading();
 
+    }
+
+    @Override
+    public void showWeatherForcast(List<Weather> weather) {
+        
     }
 
     @Override
