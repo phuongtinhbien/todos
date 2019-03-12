@@ -30,6 +30,7 @@
             android:text="Create new task"
             android:textColor="#000000"
             android:textSize="32dp"
+            android:textStyle="bold"
             tools:ignore="HardcodedText,SpUsage" />
 
         <com.google.android.material.chip.ChipGroup

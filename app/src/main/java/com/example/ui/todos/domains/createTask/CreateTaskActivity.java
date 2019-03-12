@@ -81,6 +81,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     public void notify(boolean success) {
         if (success) {
             Toast.makeText(application, "Created!!!", Toast.LENGTH_SHORT).show();
+            onBackPressed();
         }
     }
 

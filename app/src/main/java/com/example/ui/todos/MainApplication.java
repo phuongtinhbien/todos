@@ -18,6 +18,7 @@ import net.hockeyapp.android.CrashManager;
 import org.androidannotations.annotations.EApplication;
 
 import androidx.multidex.MultiDexApplication;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
 @EApplication
@@ -38,24 +39,26 @@ public class MainApplication extends MultiDexApplication {
         Hawk.init(this)
                 .setEncryptionMethod(HawkBuilder.EncryptionMethod.MEDIUM)
                 .setStorage(HawkBuilder.newSharedPrefStorage(this)).build();
-//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-//                .setDefaultFontPath("fonts/Montserrat-Regular.ttf")
-//                .setFontAttrId(R.attr.fontPath)
-//                .build()
-//        );
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/weathericons.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
 
         setApplicationComponent(DaggerApplicationComponent
                 .builder()
                 .applicationModule(new ApplicationModule(this))
                 .build());
+
         setNetComponent(DaggerNetComponent
                 .builder()
                 .netModule(new NetModule(END_POINT_WEATHER))
                 .build());
+
         setWeatherComponent(DaggerWeatherComponent
-                .builder()
-                .netComponent(netComponent)
+                .builder().netComponent(netComponent)
                 .weatherModule(new WeatherModule(netComponent.retrofit())).build());
+
         checkForCrashes();
     }
 

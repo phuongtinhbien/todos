@@ -71,21 +71,20 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
     }
 
     protected void getWeatherForcast(){
-        weatherService.getForecastByCity("Ho Chi Minh", APP_ID).subscribeOn(Schedulers.io())
+        weatherService.getForecastByCity("Ho Chi Minh City", APP_ID).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<WeatherResponse>() {
             @Override
             public void onCompleted() {
-
             }
 
             @Override
             public void onError(Throwable e) {
-
+                System.out.println(" " +e.getMessage());
             }
 
             @Override
             public void onNext(WeatherResponse weatherResponse) {
-                getView().showWeatherForcast(weatherResponse.getWeather());
+                getView().showWeatherForcast(weatherResponse);
             }
         });
     }

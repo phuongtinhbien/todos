@@ -36,24 +36,21 @@ public class CustomPageAdpater extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return toDoList.size();
+        return toDoList.size() == 0? 1:toDoList.size() ;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
-
-        ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.item_todo, container, false);
-
+        ViewGroup layout;
         if (toDoList == null || toDoList.size() == 0){
-            ViewGroup nullLayout = (ViewGroup) inflater.inflate(R.layout.null_todo, container, false);
-            nullLayout.setOnClickListener(v -> this.context.startActivity(new Intent(context, CreateTaskActivity_.class)));
-            container.addView(nullLayout);
+            layout = (ViewGroup) inflater.inflate(R.layout.null_todo, container, false);
+            layout.setOnClickListener(v -> this.context.startActivity(new Intent(context, CreateTaskActivity_.class)));
         } else{
+            layout = (ViewGroup) inflater.inflate(R.layout.item_todo, container, false);
             init(layout, position);
-            container.addView(layout);
         }
-
+        container.addView(layout);
         return layout;
     }
 

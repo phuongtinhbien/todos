@@ -12,6 +12,7 @@ import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.createTask.CreateTaskActivity_;
 import com.example.ui.todos.model.weather.Weather;
+import com.example.ui.todos.model.weather.response.WeatherResponse;
 import com.google.android.material.button.MaterialButton;
 
 import org.androidannotations.annotations.AfterInject;
@@ -46,6 +47,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @ViewById(R.id.activity_main_tv_sub_date)
     TextView subDate;
 
+    @ViewById(R.id.activity_main_tv_weather)
+    TextView weather;
+
+    @ViewById(R.id.activity_main_tv_sub_weather)
+    TextView subWeather;
 
     @AfterInject
     void inject() {
@@ -56,6 +62,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         presenter.setDbHelper(application.getApplicationComponent().dbHelper());
         presenter.getAllToDo();
         presenter.setWeatherService(application.getWeatherComponent().weatherService());
+        presenter.getWeatherForcast();
 
     }
 
@@ -78,11 +85,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         viewPager.setAdapter(new CustomPageAdpater(toDos, this));
         viewPager.setPageTransformer(true, viewPager);
         viewPager.invalidate();
-//        if (toDos == null || toDos.size() == 0) {
-//            createTask.setVisibility(View.GONE);
-//        } else {
+        if (toDos == null || toDos.size() == 0) {
+            createTask.setVisibility(View.GONE);
+        } else {
             createTask.setVisibility(View.VISIBLE);
-//        }
+        }
     }
 
     @Override
@@ -92,8 +99,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
-    public void showWeatherForcast(List<Weather> weather) {
-        
+    public void showWeatherForcast(WeatherResponse w) {
+        System.out.println(w.toString());
+        String wea = getResources().getString(R.string.weather_cloudy);
+        this.weather.setText(w.getMain().getTemp() + " - " + wea);
+        this.subWeather.setText(w.getWeather().get(0).getMain());
     }
 
     @Override

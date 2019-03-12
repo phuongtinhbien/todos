@@ -23,7 +23,7 @@ public class NetModule {
     }
 
     @Provides  // Dagger will only look for methods annotated with @Provides
-    @ApplicationScope
+    @Singleton
     Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
@@ -31,7 +31,7 @@ public class NetModule {
     }
 
     @Provides
-    @ApplicationScope
+    @Singleton
     Retrofit provideRetrofit(Gson gson) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(mBaseUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))

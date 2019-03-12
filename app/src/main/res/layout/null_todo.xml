@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
         app:cardCornerRadius="16dp"
+        android:foreground="?selectableItemBackground"
         app:cardElevation="4dp">
         <FrameLayout
             android:layout_width="match_parent"
@@ -101,6 +102,14 @@
                     android:scaleType="centerInside"
                     android:tint="@color/colorPrimaryDark"
                     app:srcCompat="@drawable/ic_edit_black_24dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Add new task"
+                    android:layout_marginTop="24dp"
+                    android:textColor="#B4000000"
+                    android:textSize="28dp" />
 
             </LinearLayout>
         </FrameLayout>
