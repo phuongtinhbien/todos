@@ -7,8 +7,8 @@
             <corners android:bottomLeftRadius="60dp"
                 android:topRightRadius="16dp"></corners>
             <size
-                android:width="48dp"
-                android:height="48dp"></size>
+                android:width="58dp"
+                android:height="58dp"></size>
         </shape>
     </item>
     <item

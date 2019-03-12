@@ -30,10 +30,10 @@
                 android:layout_margin="@dimen/margin"
                 android:layout_marginStart="14dp"
                 android:layout_marginLeft="14dp"
-                android:fontFamily="sans-serif-condensed"
+                android:fontFamily="sans-serif-medium"
                 android:text="Create new task"
-                android:textColor="#CD000000"
-                android:textSize="20dp"
+                android:textColor="#000000"
+                android:textSize="32dp"
                 tools:ignore="HardcodedText,SpUsage" />
         </RelativeLayout>
 
