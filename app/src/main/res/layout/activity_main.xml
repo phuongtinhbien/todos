@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/activity_main_ll_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:ignore="MissingPrefix">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="32dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Monday"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="32dp"
+                        android:textColor="@android:color/white"
+                        android:id="@+id/activity_main_tv_date" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="11 - 3 - 2019"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:textColor="#79FFFFFF"
+                        android:textSize="18dp"
+                        android:id="@+id/activity_main_tv_sub_date" />
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp" />
+                </LinearLayout>
+
+              <com.example.ui.todos.domains.main.CustomViewPager
+                  android:layout_width="match_parent"
+                  android:layout_height="550dp"
+                  android:id="@+id/view_pager"/>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        app:backgroundTint="@android:color/white"
+        app:cornerRadius="20dp"
+        android:layout_margin="12dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="Create new task"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+        android:id="@+id/actitvity_main_btn_create_new_task"
+        app:rippleColor="@color/colorPrimaryDark"
+        android:textColor="@android:color/black"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+
