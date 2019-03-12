@@ -58,9 +58,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:cardBackgroundColor="@android:color/white"
+                        app:cardBackgroundColor="#3C516C86"
                         app:cardCornerRadius="@dimen/radius"
-                        app:cardElevation="8dp"
+                        app:cardElevation="0dp"
                         android:layout_marginEnd="32dp"
                         android:layout_marginRight="32dp"
                         >
@@ -74,13 +74,14 @@
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:id="@+id/activity_main_iv_weather"
-                                android:src="@drawable/ic_profile"/>
+                                android:src="@drawable/ic_profile"
+                                android:tint="@android:color/white"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="11 - 3 - 2019"
                                 android:fontFamily="sans-serif-condensed-medium"
-                                android:textColor="#79000000"
+                                android:textColor="#ffffff"
                                 android:textSize="18dp"
                                 android:id="@+id/activity_main_tv_sub_weather" />
                         </LinearLayout>
