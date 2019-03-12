@@ -2,7 +2,9 @@ package com.example.ui.todos.domains.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.text.format.DateUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.ui.todos.MainApplication;
 import com.example.ui.todos.R;
@@ -17,6 +19,7 @@ import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,6 +39,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @ViewById(R.id.actitvity_main_btn_create_new_task)
     MaterialButton createTask;
 
+    @ViewById(R.id.activity_main_tv_date)
+    TextView date;
+
+    @ViewById(R.id.activity_main_tv_sub_date)
+    TextView subDate;
+
+
     @AfterInject
     void inject() {
         DaggerMainComponent.builder()
@@ -50,6 +60,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @AfterViews
     void init() {
         createTask.setOnClickListener(v -> startActivity(new Intent(this, CreateTaskActivity_.class)));
+        date.setText(DateUtils.formatDateTime(this, Calendar.getInstance().getTimeInMillis(),DateUtils.FORMAT_SHOW_WEEKDAY));
+        subDate.setText(DateUtils.formatDateTime(this, Calendar.getInstance().getTimeInMillis(),DateUtils.FORMAT_SHOW_DATE));
     }
 
     @NonNull

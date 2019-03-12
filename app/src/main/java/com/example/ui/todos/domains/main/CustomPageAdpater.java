@@ -74,9 +74,7 @@ public class CustomPageAdpater extends PagerAdapter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             desc.render(toDoList.get(position).getDesc());
         }
-
     }
-
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
