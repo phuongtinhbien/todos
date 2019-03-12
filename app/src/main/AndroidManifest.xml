@@ -21,6 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <meta-data android:name="net.hockeyapp.android.appIdentifier" android:value="${HOCKEYAPP_APP_ID}" />
         <activity
             android:name=".domains.createTask.CreateTaskActivity_"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -6,6 +6,8 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 
+import net.hockeyapp.android.CrashManager;
+
 import org.androidannotations.annotations.EApplication;
 
 import androidx.multidex.MultiDexApplication;
@@ -35,7 +37,7 @@ public class MainApplication extends MultiDexApplication {
                 .builder()
                 .applicationModule(new ApplicationModule(this))
                 .build());
-
+        checkForCrashes();
     }
 
     public ApplicationComponent getApplicationComponent() {
@@ -44,6 +46,11 @@ public class MainApplication extends MultiDexApplication {
 
     public void setApplicationComponent(ApplicationComponent applicationComponent) {
         this.applicationComponent = applicationComponent;
+    }
+
+
+    private void checkForCrashes() {
+        CrashManager.register(this);
     }
 
 }

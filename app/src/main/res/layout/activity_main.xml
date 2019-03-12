@@ -53,6 +53,7 @@
               <com.example.ui.todos.domains.main.CustomViewPager
                   android:layout_width="match_parent"
                   android:layout_height="550dp"
+                  android:overScrollMode="never"
                   android:id="@+id/view_pager"/>
 
 

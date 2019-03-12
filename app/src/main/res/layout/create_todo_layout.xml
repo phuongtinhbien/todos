@@ -21,7 +21,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="62dp">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,21 +52,24 @@
                 android:focusedByDefault="false"
                 android:fontFamily="sans-serif-medium"
                 android:hint="Title"
-                android:textSize="32dp"
+                android:textSize="24dp"
                 tools:targetApi="o" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.github.irshulx.Editor
-            android:id="@+id/create_todo_edt_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="100dp"
-            app:render_type="Editor">
+            <com.github.irshulx.Editor
+                android:id="@+id/create_todo_edt_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="100dp"
+                android:background="@drawable/rounded_box"
+                android:layout_margin="@dimen/margin"
 
-        </com.github.irshulx.Editor>
+                app:render_type="Editor">
+            </com.github.irshulx.Editor>
+
 
         <HorizontalScrollView
             android:id="@+id/tools"
