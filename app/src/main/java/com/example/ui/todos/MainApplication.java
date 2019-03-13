@@ -62,6 +62,7 @@ public class MainApplication extends MultiDexApplication {
         checkForCrashes();
     }
 
+
     public ApplicationComponent getApplicationComponent() {
         return applicationComponent;
     }

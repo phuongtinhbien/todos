@@ -13,7 +13,10 @@ import android.widget.TextView;
 import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.createTask.CreateTaskActivity_;
+import com.example.ui.todos.model.MessageEvent;
 import com.github.irshulx.Editor;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -48,6 +51,13 @@ public class CustomPageAdpater extends PagerAdapter {
             layout.setOnClickListener(v -> this.context.startActivity(new Intent(context, CreateTaskActivity_.class)));
         } else{
             layout = (ViewGroup) inflater.inflate(R.layout.item_todo, container, false);
+            layout.setOnClickListener(v ->{
+                MessageEvent messageEvent = new MessageEvent();
+                messageEvent.setToDo(toDoList.get(position));
+                this.context.startActivity(new Intent(context, CreateTaskActivity_.class));
+                EventBus.getDefault().postSticky(messageEvent);
+            });
+
             init(layout, position);
         }
         container.addView(layout);

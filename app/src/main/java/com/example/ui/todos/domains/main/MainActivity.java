@@ -11,13 +11,14 @@ import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.createTask.CreateTaskActivity_;
-import com.example.ui.todos.model.weather.Weather;
+import com.example.ui.todos.domains.tags.TagsActivity_;
 import com.example.ui.todos.model.weather.response.WeatherResponse;
 import com.google.android.material.button.MaterialButton;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -110,5 +111,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void onResume() {
         super.onResume();
         presenter.getAllToDo();
+    }
+
+    @Click(R.id.activity_main_cv_more)
+    protected void moreClick (){
+        startActivity(new Intent(this, TagsActivity_.class));
     }
 }

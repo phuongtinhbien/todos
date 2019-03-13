@@ -111,4 +111,6 @@ public class CustomViewPager extends ViewPager implements ViewPager.PageTransfor
         }
     }
 
+
+
 }

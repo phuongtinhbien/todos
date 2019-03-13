@@ -18,6 +18,9 @@ public class Tags {
     @ColumnInfo(name = "NAME")
     private String name;
 
+    @ColumnInfo(name = "STATUS")
+    private String status;
+
     public int getId() {
         return id;
     }
@@ -48,5 +51,13 @@ public class Tags {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

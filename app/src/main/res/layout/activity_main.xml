@@ -60,6 +60,7 @@
                         android:layout_weight="1"
                         app:cardBackgroundColor="#3C516C86"
                         app:cardCornerRadius="@dimen/radius"
+                        android:id="@+id/activity_main_cv_more"
                         app:cardElevation="0dp"
                         android:layout_marginEnd="32dp"
                         android:layout_marginRight="32dp"
