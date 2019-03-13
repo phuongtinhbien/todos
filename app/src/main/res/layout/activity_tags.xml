@@ -42,4 +42,15 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/activity_tags_content" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:clickable="true"
+        android:src="@drawable/ic_add_black_24dp"
+        app:backgroundTint="@android:color/white"
+        app:elevation="6dp"
+        app:fabSize="mini"
+        app:layout_anchor="@+id/app_bar"
+        app:layout_anchorGravity="bottom|right|end" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
