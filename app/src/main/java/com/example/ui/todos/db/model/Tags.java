@@ -21,6 +21,18 @@ public class Tags {
     @ColumnInfo(name = "STATUS")
     private String status;
 
+    @ColumnInfo(name = "ICON")
+    private int icon;
+
+    public Tags() {
+    }
+
+    public Tags(long createDate, String name, int icon) {
+        this.createDate = createDate;
+        this.name = name;
+        this.icon = icon;
+    }
+
     public int getId() {
         return id;
     }
@@ -59,5 +71,13 @@ public class Tags {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getIcon() {
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.ui.todos.db;
 
 
+import com.example.ui.todos.db.model.Tags;
 import com.example.ui.todos.db.model.ToDo;
 
 import java.util.List;
@@ -16,5 +17,15 @@ public interface DBHelper {
     Observable<Boolean> updateToDo(ToDo... toDo);
 
     Observable<Boolean> deleteToDo(ToDo... toDo);
+
+    //TAGS
+
+    Observable<List<Tags>> listAllTags();
+
+    Observable<Boolean> saveTags(Tags tags);
+
+    Observable<Boolean> updateTags(Tags... Tags);
+
+    Observable<Boolean> deleteTags(Tags... tags);
 
 }

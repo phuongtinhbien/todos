@@ -1,6 +1,7 @@
 package com.example.ui.todos.db;
 
 
+import com.example.ui.todos.db.model.Tags;
 import com.example.ui.todos.db.model.ToDo;
 
 import java.util.ArrayList;
@@ -23,47 +24,70 @@ public class DbHelperImpl implements DBHelper {
         this.db = db;
     }
 
+    //TODOLIST
     @Override
     public Observable<List<ToDo>> listAllToDo() {
-        return Observable.fromCallable(new Callable<List<ToDo>>() {
-            @Override
-            public List<ToDo> call() throws Exception {
-                List<ToDo> res = db.todoDao().list();
-                return res != null ? res : new ArrayList<ToDo>();
-            }
+        return Observable.fromCallable(() -> {
+            List<ToDo> res = db.todoDao().list();
+            return res != null ? res : new ArrayList<ToDo>();
         }).subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<Boolean> saveToDo(final ToDo toDo) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                db.todoDao().insert(toDo);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            db.todoDao().insert(toDo);
+            return true;
         }).subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<Boolean> updateToDo(final ToDo... toDo) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                db.todoDao().update(toDo);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            db.todoDao().update(toDo);
+            return true;
         }).subscribeOn(Schedulers.io());
     }
 
     @Override
     public Observable<Boolean> deleteToDo(final ToDo... toDo) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                db.todoDao().delete(toDo);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            db.todoDao().delete(toDo);
+            return true;
         }).subscribeOn(Schedulers.io());
     }
+
+    //TAGS
+    @Override
+    public Observable<List<Tags>> listAllTags() {
+        return Observable.fromCallable(() -> {
+            List<Tags> res = db.tagsDao().list();
+            return res != null ? res : new ArrayList<Tags>();
+        }).subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<Boolean> saveTags(final Tags tags) {
+        return Observable.fromCallable(() -> {
+            db.tagsDao().insert(tags);
+            return true;
+        }).subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<Boolean> updateTags(final Tags... tags) {
+        return Observable.fromCallable(() -> {
+            db.tagsDao().update(tags);
+            return true;
+        }).subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<Boolean> deleteTags(final Tags... tags) {
+        return Observable.fromCallable(() -> {
+            db.tagsDao().delete(tags);
+            return true;
+        }).subscribeOn(Schedulers.io());
+    }
+
 }
