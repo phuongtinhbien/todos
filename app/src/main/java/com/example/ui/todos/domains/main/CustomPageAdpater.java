@@ -13,10 +13,7 @@ import android.widget.TextView;
 import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.createTask.CreateTaskActivity_;
-import com.example.ui.todos.model.MessageEvent;
 import com.github.irshulx.Editor;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -39,23 +36,22 @@ public class CustomPageAdpater extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return toDoList.size() == 0? 1:toDoList.size() ;
+        return toDoList.size() == 0 ? 1 : toDoList.size();
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
         ViewGroup layout;
-        if (toDoList == null || toDoList.size() == 0){
+        if (toDoList == null || toDoList.size() == 0) {
             layout = (ViewGroup) inflater.inflate(R.layout.null_todo, container, false);
             layout.setOnClickListener(v -> this.context.startActivity(new Intent(context, CreateTaskActivity_.class)));
-        } else{
+        } else {
             layout = (ViewGroup) inflater.inflate(R.layout.item_todo, container, false);
-            layout.setOnClickListener(v ->{
-                MessageEvent messageEvent = new MessageEvent();
-                messageEvent.setToDo(toDoList.get(position));
-                this.context.startActivity(new Intent(context, CreateTaskActivity_.class));
-                EventBus.getDefault().postSticky(messageEvent);
+            layout.setOnClickListener(v -> {
+                Intent intent = new Intent(context, CreateTaskActivity_.class);
+                intent.putExtra("TODO_ID", toDoList.get(position).getId());
+                this.context.startActivity(intent);
             });
 
             init(layout, position);

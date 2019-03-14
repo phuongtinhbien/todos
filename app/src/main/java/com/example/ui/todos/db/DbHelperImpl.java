@@ -57,6 +57,11 @@ public class DbHelperImpl implements DBHelper {
         }).subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Observable<ToDo> getToDo(int id) {
+        return Observable.fromCallable(() -> db.todoDao().get(id)).subscribeOn(Schedulers.io());
+    }
+
     //TAGS
     @Override
     public Observable<List<Tags>> listAllTags() {
@@ -88,6 +93,11 @@ public class DbHelperImpl implements DBHelper {
             db.tagsDao().delete(tags);
             return true;
         }).subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<Tags> getTag(int id) {
+        return Observable.fromCallable(() -> db.tagsDao().get(id)).subscribeOn(Schedulers.io());
     }
 
 }

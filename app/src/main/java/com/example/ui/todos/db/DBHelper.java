@@ -18,6 +18,8 @@ public interface DBHelper {
 
     Observable<Boolean> deleteToDo(ToDo... toDo);
 
+    Observable<ToDo> getToDo (int id);
+
     //TAGS
 
     Observable<List<Tags>> listAllTags();
@@ -27,5 +29,7 @@ public interface DBHelper {
     Observable<Boolean> updateTags(Tags... Tags);
 
     Observable<Boolean> deleteTags(Tags... tags);
+
+    Observable<Tags> getTag (int id);
 
 }

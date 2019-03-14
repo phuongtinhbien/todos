@@ -40,6 +40,25 @@ public class CreateTaskPresenter extends MvpBasePresenter<CreateTaskView> {
 
     }
 
+    public void getToDo (int  id){
+        dbHelper.getToDo(id).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ToDo>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(ToDo toDo) {
+                getView().showToDo(toDo);
+            }
+        });
+    }
+
     public void setDbHelper(DBHelper dbHelper) {
         this.dbHelper = dbHelper;
     }

@@ -4,15 +4,12 @@ import com.example.ui.todos.db.DBHelper;
 import com.example.ui.todos.db.model.Tags;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import com.example.ui.todos.R;
 
 public class TagsPresenter extends MvpBasePresenter<TagsView> {
 
@@ -39,8 +36,6 @@ public class TagsPresenter extends MvpBasePresenter<TagsView> {
         });
 
     }
-
-
 
 
     public void deleteToDo(Tags... tags) {

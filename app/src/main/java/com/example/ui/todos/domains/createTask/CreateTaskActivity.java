@@ -1,6 +1,5 @@
 package com.example.ui.todos.domains.createTask;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +13,6 @@ import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.main.DaggerMainComponent;
-import com.example.ui.todos.model.MessageEvent;
 import com.github.irshulx.Editor;
 import com.github.irshulx.models.EditorTextStyle;
 import com.google.android.material.button.MaterialButton;
@@ -25,9 +23,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -35,7 +30,6 @@ import java.util.Calendar;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
-import com.example.ui.todos.R;
 
 @EActivity(R.layout.activity_create_task)
 public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskPresenter> implements CreateTaskView {
@@ -94,6 +88,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
         }
     }
 
+
     private void setUpEditor() {
         findViewById(R.id.action_bold).setOnClickListener(v -> editor.updateTextStyle(EditorTextStyle.BOLD));
         findViewById(R.id.action_Italic).setOnClickListener(v -> editor.updateTextStyle(EditorTextStyle.ITALIC));
@@ -119,27 +114,22 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void onMessageEvent(MessageEvent event) {
-        System.out.println(event.getToDo().getTitle());
+
+    @Override
+    public void showToDo(ToDo toDo) {
+        System.out.println(toDo.getTitle());
         titleAct.setText(getString(R.string.edit_task));
-        title.setText(event.getToDo().getTitle());
-        editor.render(event.getToDo().getDesc());
-
+        title.setText(toDo.getTitle());
+        editor.render(toDo.getDesc());
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().unregister(this);
+    protected void onResume() {
+        super.onResume();
+
+        Intent intent = getIntent();
+        int toDoId = intent.getIntExtra("TODO_ID", -1);
+        if (toDoId > 0)
+            presenter.getToDo(toDoId);
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().register(this);
-    }
-
-
-
 }
