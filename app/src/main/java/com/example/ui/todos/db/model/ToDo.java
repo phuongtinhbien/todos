@@ -7,11 +7,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.Relation;
 
-@Entity(tableName = "TODO_TABLE", foreignKeys = @ForeignKey(entity = Tags.class, parentColumns = "id", childColumns = "TAG"))
+@Entity(tableName = "TODO_TABLE")
 public class ToDo {
 
     @PrimaryKey(autoGenerate = true)
@@ -38,8 +39,8 @@ public class ToDo {
     @ColumnInfo(name = "TAG")
     private int tagsId;
 
-    @Relation(entity = Tags.class, parentColumn = "id", entityColumn = "TAG")
-    private List<Tags> tags;
+    @Ignore
+    private Tags tag;
 
     public int getId() {
         return id;
@@ -105,11 +106,11 @@ public class ToDo {
         this.tagsId = tagsId;
     }
 
-    public List<Tags> getTags() {
-        return tags;
+    public Tags getTag() {
+        return tag;
     }
 
-    public void setTags(List<Tags> tags) {
-        this.tags = tags;
+    public void setTag(Tags tag) {
+        this.tag = tag;
     }
 }

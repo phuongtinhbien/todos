@@ -2,6 +2,7 @@ package com.example.ui.todos.domains.main;
 
 
 import com.example.ui.todos.db.DBHelper;
+import com.example.ui.todos.db.model.Tags;
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.infrastructures.WeatherService;
 import com.example.ui.todos.model.weather.response.WeatherResponse;
@@ -11,8 +12,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -30,7 +33,27 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
     }
 
     protected void getAllToDo() {
-        dbHelper.listAllToDo().observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<ToDo>>() {
+        dbHelper.listAllToDo().concatMap((Func1<List<ToDo>, Observable<List<ToDo>>>) toDos -> {
+            for (ToDo i: toDos){
+                dbHelper.getTag(i.getTagsId()).subscribe(new Observer<Tags>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Tags tags) {
+                        i.setTag(tags);
+                    }
+                });
+            }
+            return Observable.just(toDos);
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<ToDo>>() {
             @Override
             public void onCompleted() {
             }

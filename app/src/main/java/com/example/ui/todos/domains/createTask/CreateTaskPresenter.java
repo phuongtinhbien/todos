@@ -10,8 +10,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 public class CreateTaskPresenter extends MvpBasePresenter<CreateTaskView> {
 
@@ -43,8 +45,26 @@ public class CreateTaskPresenter extends MvpBasePresenter<CreateTaskView> {
 
     }
 
-    public void getToDo (int  id){
-        dbHelper.getToDo(id).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ToDo>() {
+    public void getToDo(int id) {
+        dbHelper.getToDo(id).concatMap((Func1<ToDo, Observable<ToDo>>) toDo -> {
+            dbHelper.getTag(toDo.getTagsId()).subscribe(new Observer<Tags>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(Tags tags) {
+                    toDo.setTag(tags);
+                }
+            });
+            return Observable.just(toDo);
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ToDo>() {
             @Override
             public void onCompleted() {
 

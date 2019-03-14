@@ -49,4 +49,9 @@ public class TagsListAdapter extends RecyclerView.Adapter<TagsViewHolder> {
         this.tagsList = tagsList;
         notifyDataSetChanged();
     }
+
+    public void removeItem(int adapterPosition) {
+        tagsList.remove(adapterPosition);
+        notifyItemRemoved(adapterPosition);
+    }
 }

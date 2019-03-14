@@ -20,7 +20,7 @@ public class Tags {
     private String name;
 
     @ColumnInfo(name = "STATUS")
-    private String status;
+    private String status = "ACTIVE";
 
     @ColumnInfo(name = "ICON")
     private int icon;

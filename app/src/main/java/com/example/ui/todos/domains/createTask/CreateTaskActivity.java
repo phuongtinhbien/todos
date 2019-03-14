@@ -64,6 +64,8 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     private List<Chip> chipIdList;
     private Integer currTag = 0;
 
+    private ToDo currToDo;
+
     @NonNull
     @Override
     public CreateTaskPresenter createPresenter() {
@@ -83,12 +85,14 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     @AfterViews
     void init() {
         save.setOnClickListener(v -> {
-            ToDo toDo = new ToDo();
-            toDo.setTitle(title.getText() != null ? title.getText().toString() : " ");
-            toDo.setDesc(editor.getContentAsHTML());
-            toDo.setCreateDate(Calendar.getInstance().getTime().getTime());
-            toDo.setTagsId(tagsList.get(currTag).getId());
-            presenter.createToDo(toDo);
+            if (currToDo == null){
+                currToDo = new ToDo();
+                currToDo.setCreateDate(Calendar.getInstance().getTime().getTime());
+            }
+            currToDo.setTitle(title.getText() != null ? title.getText().toString() : " ");
+            currToDo.setDesc(editor.getContentAsHTML());
+            currToDo.setTagsId(tagsList.get(currTag).getId());
+            presenter.createToDo(currToDo);
         });
         tags.setSingleSelection(true);
         tags.setOnCheckedChangeListener((chipGroup, i) -> {
@@ -136,6 +140,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
 
     @Override
     public void showToDo(ToDo toDo) {
+        currToDo = toDo;
         System.out.println(toDo.getTitle());
         titleAct.setText(getString(R.string.edit_task));
         title.setText(toDo.getTitle());
@@ -152,6 +157,9 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
             newChip.setCheckable(true);
             newChip.setChipIconResource(i.getIcon());
             newChip.setText(i.getName());
+            if (currToDo != null && currToDo.getTagsId() == i.getId()){
+                newChip.setChecked(true);
+            }
             newChip.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 Chip curr = (Chip) buttonView;
                 if (!isChecked) {
@@ -169,10 +177,16 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     @Override
     protected void onResume() {
         super.onResume();
-
         Intent intent = getIntent();
         int toDoId = intent.getIntExtra("TODO_ID", -1);
         if (toDoId > 0)
             presenter.getToDo(toDoId);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

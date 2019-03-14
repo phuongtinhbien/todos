@@ -12,6 +12,7 @@ import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.createTask.CreateTaskActivity_;
 import com.example.ui.todos.domains.tags.TagsActivity_;
+import com.example.ui.todos.domains.tags.TagsViewHolder;
 import com.example.ui.todos.model.weather.response.WeatherResponse;
 import com.google.android.material.button.MaterialButton;
 
@@ -28,6 +29,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 
 @EActivity(R.layout.activity_main)
@@ -54,6 +60,15 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @ViewById(R.id.activity_main_tv_sub_weather)
     TextView subWeather;
 
+    @ViewById(R.id.activity_main_content_lv_todos)
+    RecyclerView todoList;
+
+    private List<ToDo> toDos;
+    private int currIndex;
+
+    private ToDoListAdapter toDoListAdapter;
+
+
     @AfterInject
     void inject() {
         DaggerMainComponent.builder()
@@ -71,8 +86,26 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @AfterViews
     void init() {
         createTask.setOnClickListener(v -> startActivity(new Intent(this, CreateTaskActivity_.class)));
-        date.setText(DateUtils.formatDateTime(this, Calendar.getInstance().getTimeInMillis(),DateUtils.FORMAT_SHOW_WEEKDAY));
-        subDate.setText(DateUtils.formatDateTime(this, Calendar.getInstance().getTimeInMillis(),DateUtils.FORMAT_SHOW_DATE));
+        date.setText(DateUtils.formatDateTime(this, Calendar.getInstance().getTimeInMillis(), DateUtils.FORMAT_SHOW_WEEKDAY));
+        subDate.setText(DateUtils.formatDateTime(this, Calendar.getInstance().getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE));
+
+        SnapHelper snapHelper = new PagerSnapHelper();
+
+        snapHelper.attachToRecyclerView(todoList);
+
+
+        SwipeToDeleteCallback.RecyclerItemTouchHelperListener listener = (viewHolder, direction, position) -> {
+            if (viewHolder instanceof ToDoViewHolder) {
+                String name = toDos.get(viewHolder.getAdapterPosition()).getTitle();
+                final ToDo deletedItem = toDos.get(viewHolder.getAdapterPosition());
+                final int deletedIndex = viewHolder.getAdapterPosition();
+                toDoListAdapter.removeItem(viewHolder.getAdapterPosition());
+                this.toDos.remove(deletedItem);
+                presenter.deleteToDo(deletedItem);
+            }
+        };
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new SwipeToDeleteCallback(0, ItemTouchHelper.UP, listener);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(todoList);
     }
 
     @NonNull
@@ -83,6 +116,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void showListTodo(List<ToDo> toDos) {
+        this.toDos = toDos;
+        toDoListAdapter = new ToDoListAdapter(this, this.toDos);
+        this.todoList.setAdapter(toDoListAdapter);
+
+        //TODO
         viewPager.setAdapter(new CustomPageAdpater(toDos, this));
         viewPager.setPageTransformer(true, viewPager);
         viewPager.invalidate();
@@ -114,7 +152,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Click(R.id.activity_main_cv_more)
-    protected void moreClick (){
+    protected void moreClick() {
         startActivity(new Intent(this, TagsActivity_.class));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.currIndex = viewPager.getCurrentItem();
     }
 }

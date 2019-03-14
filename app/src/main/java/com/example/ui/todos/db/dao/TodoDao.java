@@ -2,6 +2,7 @@ package com.example.ui.todos.db.dao;
 
 
 import com.example.ui.todos.db.model.ToDo;
+import com.example.ui.todos.db.model.ToDoWithTags;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import androidx.room.Update;
 @Dao
 public interface TodoDao {
 
-    @Query("SELECT * FROM TODO_TABLE JOIN TAGS_TABLE ON TODO_TABLE.TAG = TAGS_TABLE.id ORDER BY CREATE_DATE DESC")
+    @Query("SELECT * FROM TODO_TABLE ORDER BY CREATE_DATE DESC")
     List<ToDo> list();
 
     @Query("SELECT * FROM TODO_TABLE WHERE ID = :id")

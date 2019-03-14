@@ -117,6 +117,9 @@ public class MainApplication extends MultiDexApplication {
                     tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Normal", R.drawable.ic_normal));
                     tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Shopping", R.drawable.ic_shopping));
                     tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Work", R.drawable.ic_work));
+                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Coffee", R.drawable.ic_coffee));
+                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Transport", R.drawable.ic_transport));
+                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"event", R.drawable.ic_event));
                     for (Tags i: tagsList) {
                         getApplicationComponent().dbHelper().saveTags(i).subscribe();
                     }

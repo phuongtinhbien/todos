@@ -16,6 +16,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,8 @@ public class TagsActivity extends BaseActivity<TagsView, TagsPresenter> implemen
     RecyclerView tags;
 
     TagsListAdapter tagsListAdapter;
+
+    private List<Tags> tagsList;
 
     @AfterInject
     void inject() {
@@ -48,7 +51,17 @@ public class TagsActivity extends BaseActivity<TagsView, TagsPresenter> implemen
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         tags.setHasFixedSize(true);
         tags.setLayoutManager(layoutManager);
-
+        SwipeToDeleteCallback.RecyclerItemTouchHelperListener listener = (viewHolder, direction, position) -> {
+            if (viewHolder instanceof TagsViewHolder) {
+                String name = tagsList.get(viewHolder.getAdapterPosition()).getName();
+                final Tags deletedItem = tagsList.get(viewHolder.getAdapterPosition());
+                final int deletedIndex = viewHolder.getAdapterPosition();
+                tagsListAdapter.removeItem(viewHolder.getAdapterPosition());
+                presenter.deleteTags(deletedItem);
+            }
+        };
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new SwipeToDeleteCallback(listener);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(tags);
     }
 
     @NonNull
@@ -59,6 +72,7 @@ public class TagsActivity extends BaseActivity<TagsView, TagsPresenter> implemen
 
     @Override
     public void showListTags(List<Tags> tags) {
+        tagsList = tags;
         System.out.println("tag_size: " + tags.size());
         tagsListAdapter = new TagsListAdapter(this, tags);
         this.tags.setAdapter(tagsListAdapter);

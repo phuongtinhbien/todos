@@ -80,7 +80,7 @@ public class CustomPageAdpater extends PagerAdapter {
 
         tag = layout.findViewById(R.id.item_todo_iv_tag);
 
-        tag.setImageResource(toDoList.get(position).getTags().get(0).getIcon());
+        tag.setImageResource(toDoList.get(position).getTag().getIcon());
     }
 
     @Override
