@@ -15,9 +15,6 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by MyPC on 1/3/2017.
- */
 
 
 public class MainPresenter extends MvpBasePresenter<MainView> {

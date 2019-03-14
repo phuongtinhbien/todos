@@ -11,7 +11,6 @@ import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -60,7 +59,7 @@ public class TagsActivity extends BaseActivity<TagsView, TagsPresenter> implemen
 
     @Override
     public void showListTags(List<Tags> tags) {
-        System.out.println("tag_size: "+ tags.size());
+        System.out.println("tag_size: " + tags.size());
         tagsListAdapter = new TagsListAdapter(this, tags);
         this.tags.setAdapter(tagsListAdapter);
     }

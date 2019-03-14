@@ -2,6 +2,7 @@ package com.example.ui.todos.db.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "TAGS_TABLE")
@@ -27,6 +28,7 @@ public class Tags {
     public Tags() {
     }
 
+    @Ignore
     public Tags(long createDate, String name, int icon) {
         this.createDate = createDate;
         this.name = name;

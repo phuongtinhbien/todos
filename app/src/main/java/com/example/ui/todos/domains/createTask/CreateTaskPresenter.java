@@ -2,8 +2,11 @@ package com.example.ui.todos.domains.createTask;
 
 
 import com.example.ui.todos.db.DBHelper;
+import com.example.ui.todos.db.model.Tags;
 import com.example.ui.todos.db.model.ToDo;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -57,6 +60,24 @@ public class CreateTaskPresenter extends MvpBasePresenter<CreateTaskView> {
                 getView().showToDo(toDo);
             }
         });
+    }
+
+    protected void getAllTag() {
+        dbHelper.listAllTags().observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<Tags>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
+            @Override
+            public void onNext(List<Tags> toDos) {
+                getView().showListTags(toDos);
+            }
+        });
+
     }
 
     public void setDbHelper(DBHelper dbHelper) {

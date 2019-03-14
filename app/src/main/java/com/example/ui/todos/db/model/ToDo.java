@@ -1,11 +1,17 @@
 package com.example.ui.todos.db.model;
 
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import java.util.List;
 
-@Entity(tableName = "TODO_TABLE")
+import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+import androidx.room.Relation;
+
+@Entity(tableName = "TODO_TABLE", foreignKeys = @ForeignKey(entity = Tags.class, parentColumns = "id", childColumns = "TAG"))
 public class ToDo {
 
     @PrimaryKey(autoGenerate = true)
@@ -29,9 +35,11 @@ public class ToDo {
     @ColumnInfo(name = "STATUS")
     private String status;
 
+    @ColumnInfo(name = "TAG")
+    private int tagsId;
 
-//    @ColumnInfo(name = "TAG")
-//    private String tags;
+    @Relation(entity = Tags.class, parentColumn = "id", entityColumn = "TAG")
+    private List<Tags> tags;
 
     public int getId() {
         return id;
@@ -88,12 +96,20 @@ public class ToDo {
     public void setStatus(String status) {
         this.status = status;
     }
-//
-//    public String getTags() {
-//        return tags;
-//    }
-//
-//    public void setTags(String tags) {
-//        this.tags = tags;
-//    }
+
+    public int getTagsId() {
+        return tagsId;
+    }
+
+    public void setTagsId(int tagsId) {
+        this.tagsId = tagsId;
+    }
+
+    public List<Tags> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tags> tags) {
+        this.tags = tags;
+    }
 }

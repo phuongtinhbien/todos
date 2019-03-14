@@ -10,12 +10,15 @@ import android.widget.Toast;
 
 import com.example.ui.todos.MainApplication;
 import com.example.ui.todos.R;
+import com.example.ui.todos.db.model.Tags;
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.main.DaggerMainComponent;
 import com.github.irshulx.Editor;
 import com.github.irshulx.models.EditorTextStyle;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.androidannotations.annotations.AfterInject;
@@ -25,7 +28,9 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -46,11 +51,18 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     @ViewById(R.id.create_todo_layout_title)
     TextView titleAct;
 
+    @ViewById(R.id.create_todo_cg_tags)
+    ChipGroup tags;
+
     @App
     MainApplication application;
 
     @Inject
     CreateTaskPresenter presenter;
+
+    private List<Tags> tagsList;
+    private List<Chip> chipIdList;
+    private Integer currTag = 0;
 
     @NonNull
     @Override
@@ -65,7 +77,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
                 .build()
                 .inject(this);
         presenter.setDbHelper(application.getApplicationComponent().dbHelper());
-
+        presenter.getAllTag();
     }
 
     @AfterViews
@@ -75,9 +87,18 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
             toDo.setTitle(title.getText() != null ? title.getText().toString() : " ");
             toDo.setDesc(editor.getContentAsHTML());
             toDo.setCreateDate(Calendar.getInstance().getTime().getTime());
+            toDo.setTagsId(tagsList.get(currTag).getId());
             presenter.createToDo(toDo);
         });
+        tags.setSingleSelection(true);
+        tags.setOnCheckedChangeListener((chipGroup, i) -> {
+            Chip curr = chipGroup.findViewById(chipGroup.getCheckedChipId());
+            curr.setChipBackgroundColorResource(R.color.colorPrimary);
+            curr.setTextColor(getResources().getColor(android.R.color.white));
+            curr.setChipIconVisible(false);
+        });
         setUpEditor();
+
     }
 
     @Override
@@ -87,7 +108,6 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
             onBackPressed();
         }
     }
-
 
     private void setUpEditor() {
         findViewById(R.id.action_bold).setOnClickListener(v -> editor.updateTextStyle(EditorTextStyle.BOLD));
@@ -114,13 +134,36 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
         }
     }
 
-
     @Override
     public void showToDo(ToDo toDo) {
         System.out.println(toDo.getTitle());
         titleAct.setText(getString(R.string.edit_task));
         title.setText(toDo.getTitle());
         editor.render(toDo.getDesc());
+    }
+
+    @Override
+    public void showListTags(List<Tags> t) {
+        tagsList = t;
+        chipIdList = new ArrayList<>();
+        for (Tags i : t) {
+            Chip newChip = new Chip(this);
+            chipIdList.add(newChip);
+            newChip.setCheckable(true);
+            newChip.setChipIconResource(i.getIcon());
+            newChip.setText(i.getName());
+            newChip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                Chip curr = (Chip) buttonView;
+                if (!isChecked) {
+                    curr.setChipBackgroundColorResource(R.color.gray_background);
+                    curr.setTextColor(getResources().getColor(android.R.color.black));
+                    curr.setChipIconVisible(true);
+                } else {
+                    this.currTag = chipIdList.indexOf(curr);
+                }
+            });
+            tags.addView(newChip);
+        }
     }
 
     @Override

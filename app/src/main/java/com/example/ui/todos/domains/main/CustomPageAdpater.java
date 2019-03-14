@@ -27,7 +27,7 @@ public class CustomPageAdpater extends PagerAdapter {
 
     private TextView title, date;
     private Editor desc;
-    private ImageView line;
+    private ImageView line, tag;
 
     public CustomPageAdpater(List<ToDo> toDoList, Context context) {
         this.toDoList = toDoList;
@@ -77,6 +77,10 @@ public class CustomPageAdpater extends PagerAdapter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             desc.render(toDoList.get(position).getDesc());
         }
+
+        tag = layout.findViewById(R.id.item_todo_iv_tag);
+
+        tag.setImageResource(toDoList.get(position).getTags().get(0).getIcon());
     }
 
     @Override
