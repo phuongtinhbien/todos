@@ -13,7 +13,7 @@ import androidx.room.Update;
 
 @Dao
 public interface TagsDao {
-    @Query("SELECT * FROM TAGS_TABLE ORDER BY CREATE_DATE DESC")
+    @Query("SELECT DISTINCT * FROM TAGS_TABLE ORDER BY CREATE_DATE DESC")
     List<Tags> list();
 
     @Query("SELECT * FROM TAGS_TABLE WHERE ID = :id")
@@ -27,5 +27,6 @@ public interface TagsDao {
 
     @Delete()
     void delete(Tags... deleteItem);
+
 
 }

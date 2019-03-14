@@ -47,6 +47,7 @@ public class TagsActivity extends BaseActivity<TagsView, TagsPresenter> implemen
     void init() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
+        tags.setHasFixedSize(true);
         tags.setLayoutManager(layoutManager);
 
     }
@@ -59,6 +60,7 @@ public class TagsActivity extends BaseActivity<TagsView, TagsPresenter> implemen
 
     @Override
     public void showListTags(List<Tags> tags) {
+        System.out.println("tag_size: "+ tags.size());
         tagsListAdapter = new TagsListAdapter(this, tags);
         this.tags.setAdapter(tagsListAdapter);
     }

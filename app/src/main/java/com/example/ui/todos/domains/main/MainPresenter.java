@@ -62,9 +62,6 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
         getAllToDo();
     }
 
-    public WeatherService getWeatherService() {
-        return weatherService;
-    }
 
     public void setWeatherService(WeatherService weatherService) {
         this.weatherService = weatherService;

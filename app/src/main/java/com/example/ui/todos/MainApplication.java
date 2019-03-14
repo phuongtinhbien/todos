@@ -23,6 +23,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import androidx.multidex.MultiDexApplication;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
@@ -99,13 +101,30 @@ public class MainApplication extends MultiDexApplication {
 
     private void generateTags (){
         System.out.println("GENERATE");
-        List<Tags> tagsList = new ArrayList<>();
-        tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Normal", R.drawable.ic_normal));
-        tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Shopping", R.drawable.ic_shopping));
-        tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Work", R.drawable.ic_work));
-        for (Tags i: tagsList) {
-            getApplicationComponent().dbHelper().saveTags(i).subscribe();
-        }
+        getApplicationComponent().dbHelper().listAllTags().observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<Tags>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
+            @Override
+            public void onNext(List<Tags> toDos) {
+                if (toDos.size()== 0){
+                    List<Tags> tagsList = new ArrayList<>();
+                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Normal", R.drawable.ic_normal));
+                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Shopping", R.drawable.ic_shopping));
+                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Work", R.drawable.ic_work));
+                    for (Tags i: tagsList) {
+                        getApplicationComponent().dbHelper().saveTags(i).subscribe();
+                    }
+                }
+
+            }
+        });
+
 
     }
 
