@@ -7,6 +7,8 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.ToDo;
@@ -21,6 +23,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
     private Context context;
     private List<ToDo> toDoList;
+
+    private int lastPosition = -1;
 
     public ToDoListAdapter(Context context, List<ToDo> toDoList) {
         this.context = context;
@@ -59,10 +63,12 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                 intent.putExtra("TODO_ID", toDoList.get(position).getId());
                 this.context.startActivity(intent);
             });
+            setAnimation(holder.itemView, position);
         }
         else{
             holder.itemView.setOnClickListener(v -> this.context.startActivity(new Intent(context, CreateTaskActivity_.class)));
         }
+
 
     }
 
@@ -74,5 +80,21 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
     public void removeItem(int adapterPosition) {
         toDoList.remove(adapterPosition);
         notifyItemRemoved(adapterPosition);
+    }
+
+
+
+    private void setAnimation(View viewToAnimate, int position) {
+
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            animation.setDuration(1000);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        } else if ( position < lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 }
