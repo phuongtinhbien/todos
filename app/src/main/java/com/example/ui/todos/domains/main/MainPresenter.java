@@ -70,10 +70,8 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
 
     }
 
-
     public void deleteToDo(ToDo... toDos) {
         dbHelper.deleteToDo(toDos).observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> getView().notify(aBoolean));
-        getAllToDo();
     }
 
 

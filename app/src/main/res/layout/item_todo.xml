@@ -15,9 +15,11 @@
         app:cardElevation="4dp">
 
         <ImageView
+            android:id="@+id/item_todo_iv_done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:foreground="?selectableItemBackground"
             android:src="@drawable/corner_rounded_check" />
 
         <RelativeLayout

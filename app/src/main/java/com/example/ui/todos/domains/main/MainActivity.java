@@ -12,7 +12,6 @@ import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.createTask.CreateTaskActivity_;
 import com.example.ui.todos.domains.tags.TagsActivity_;
-import com.example.ui.todos.domains.tags.TagsViewHolder;
 import com.example.ui.todos.model.weather.response.WeatherResponse;
 import com.google.android.material.button.MaterialButton;
 
@@ -30,7 +29,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
@@ -43,8 +41,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     MainApplication application;
     @Inject
     MainPresenter presenter;
-    @ViewById(R.id.view_pager)
-    CustomViewPager viewPager;
+
     @ViewById(R.id.actitvity_main_btn_create_new_task)
     MaterialButton createTask;
 
@@ -67,7 +64,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     private int currIndex;
 
     private ToDoListAdapter toDoListAdapter;
-
+    private int oldX = 0;
 
     @AfterInject
     void inject() {
@@ -106,6 +103,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         };
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new SwipeToDeleteCallback(0, ItemTouchHelper.UP, listener);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(todoList);
+
     }
 
     @NonNull
@@ -120,10 +118,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         toDoListAdapter = new ToDoListAdapter(this, this.toDos);
         this.todoList.setAdapter(toDoListAdapter);
 
-        //TODO
-        viewPager.setAdapter(new CustomPageAdpater(toDos, this));
-        viewPager.setPageTransformer(true, viewPager);
-        viewPager.invalidate();
         if (toDos == null || toDos.size() == 0) {
             createTask.setVisibility(View.GONE);
         } else {
@@ -156,9 +150,4 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         startActivity(new Intent(this, TagsActivity_.class));
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        this.currIndex = viewPager.getCurrentItem();
-    }
 }

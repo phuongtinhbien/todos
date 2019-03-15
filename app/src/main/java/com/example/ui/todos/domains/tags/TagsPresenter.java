@@ -40,7 +40,6 @@ public class TagsPresenter extends MvpBasePresenter<TagsView> {
 
     public void deleteTags(Tags... tags) {
         dbHelper.deleteTags(tags).observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> getView().notify(aBoolean));
-        getAllTag();
     }
 
     public void setDbHelper(DBHelper dbHelper) {

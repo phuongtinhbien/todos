@@ -1,5 +1,8 @@
 package com.example.ui.todos.domains.tags;
 
+import android.os.Build;
+import android.view.View;
+
 import com.example.ui.todos.MainApplication;
 import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.Tags;
@@ -16,6 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,11 +61,13 @@ public class TagsActivity extends BaseActivity<TagsView, TagsPresenter> implemen
                 final Tags deletedItem = tagsList.get(viewHolder.getAdapterPosition());
                 final int deletedIndex = viewHolder.getAdapterPosition();
                 tagsListAdapter.removeItem(viewHolder.getAdapterPosition());
+                tagsList.remove(deletedItem);
                 presenter.deleteTags(deletedItem);
             }
         };
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new SwipeToDeleteCallback(listener);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(tags);
+
     }
 
     @NonNull

@@ -17,7 +17,7 @@ public class ToDoViewHolder extends RecyclerView.ViewHolder {
 
     protected TextView title, date;
     protected Editor desc;
-    protected ImageView line, tag;
+    protected ImageView line, tag, done;
     protected LinearLayout viewForeground;
     public ToDoViewHolder(@NonNull View layout, boolean type) {
         super(layout);
@@ -27,6 +27,7 @@ public class ToDoViewHolder extends RecyclerView.ViewHolder {
             date = layout.findViewById(R.id.item_todo_tv_date);
             desc = layout.findViewById(R.id.item_todo_tv_desc);
             tag = layout.findViewById(R.id.item_todo_iv_tag);
+            done = layout.findViewById(R.id.item_todo_iv_done);
             viewForeground = layout.findViewById(R.id.item_to_ll_foreground);
         }
 

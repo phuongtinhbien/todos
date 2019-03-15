@@ -2,6 +2,8 @@ package com.example.ui.todos.domains.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -63,7 +65,17 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                 intent.putExtra("TODO_ID", toDoList.get(position).getId());
                 this.context.startActivity(intent);
             });
-            setAnimation(holder.itemView, position);
+            if (toDoList.get(position).getStatus().equals("DONE")){
+                holder.done.setImageResource(R.drawable.ic_check_circle);
+                holder.done.setPadding(15,15,15,15);
+            }
+            holder.done.setOnClickListener(v -> {
+                toDoList.get(position).setStatus("DONE");
+                holder.done.setImageResource(R.drawable.ic_check_circle);
+                holder.done.setPadding(15,15,15,15);
+
+            });
+//            setAnimation(holder.itemView, position);
         }
         else{
             holder.itemView.setOnClickListener(v -> this.context.startActivity(new Intent(context, CreateTaskActivity_.class)));
@@ -80,21 +92,5 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
     public void removeItem(int adapterPosition) {
         toDoList.remove(adapterPosition);
         notifyItemRemoved(adapterPosition);
-    }
-
-
-
-    private void setAnimation(View viewToAnimate, int position) {
-
-        if (position > lastPosition) {
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-            animation.setDuration(1000);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
-        } else if ( position < lastPosition) {
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-            viewToAnimate.startAnimation(animation);
-            lastPosition = position;
-        }
     }
 }

@@ -26,7 +26,7 @@ public class MainActivityTest {
 
     @Test
     public void showListTodo() {
-        Espresso.onView(withId(R.id.view_pager)).check(matches(ViewMatchers.hasMinimumChildCount(1)));
+        Espresso.onView(withId(R.id.activity_main_content_lv_todos)).check(matches(ViewMatchers.hasMinimumChildCount(1)));
     }
 
     @Test

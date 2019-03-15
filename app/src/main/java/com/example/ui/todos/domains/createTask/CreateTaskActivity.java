@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +18,7 @@ import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.main.DaggerMainComponent;
 import com.github.irshulx.Editor;
+import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorTextStyle;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -31,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -66,6 +71,8 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
 
     private ToDo currToDo;
 
+    private Uri currUri;
+
     @NonNull
     @Override
     public CreateTaskPresenter createPresenter() {
@@ -85,7 +92,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     @AfterViews
     void init() {
         save.setOnClickListener(v -> {
-            if (currToDo == null){
+            if (currToDo == null) {
                 currToDo = new ToDo();
                 currToDo.setCreateDate(Calendar.getInstance().getTime().getTime());
             }
@@ -101,8 +108,23 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
             curr.setTextColor(getResources().getColor(android.R.color.white));
             curr.setChipIconVisible(false);
         });
-        setUpEditor();
+        editor.render();
+        editor.setEditorListener(new EditorListener() {
+            @Override
+            public void onTextChanged(EditText editText, Editable text) {
+            }
 
+            @Override
+            public void onUpload(Bitmap image, String uuid) {
+                editor.onImageUploadComplete(currUri.toString(), uuid);
+            }
+
+            @Override
+            public View onRenderMacro(String name, Map<String, Object> props, int index) {
+                return null;
+            }
+        });
+        setUpEditor();
     }
 
     @Override
@@ -125,12 +147,14 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == editor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
+            this.currUri = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), this.currUri);
                 editor.insertImage(bitmap);
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
         } else if (resultCode == Activity.RESULT_CANCELED) {
@@ -142,9 +166,10 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     public void showToDo(ToDo toDo) {
         currToDo = toDo;
         System.out.println(toDo.getTitle());
-        titleAct.setText(getString(R.string.edit_task));
+//        titleAct.setText(getString(R.string.edit_task));
         title.setText(toDo.getTitle());
         editor.render(toDo.getDesc());
+        editor.render();
     }
 
     @Override
@@ -157,7 +182,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
             newChip.setCheckable(true);
             newChip.setChipIconResource(i.getIcon());
             newChip.setText(i.getName());
-            if (currToDo != null && currToDo.getTagsId() == i.getId()){
+            if (currToDo != null && currToDo.getTagsId() == i.getId()) {
                 newChip.setChecked(true);
             }
             newChip.setOnCheckedChangeListener((buttonView, isChecked) -> {
