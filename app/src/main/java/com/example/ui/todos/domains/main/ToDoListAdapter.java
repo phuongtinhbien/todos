@@ -2,15 +2,11 @@ package com.example.ui.todos.domains.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Build;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.ToDo;
@@ -25,8 +21,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
     private Context context;
     private List<ToDo> toDoList;
-
-    private int lastPosition = -1;
 
     public ToDoListAdapter(Context context, List<ToDo> toDoList) {
         this.context = context;
@@ -49,7 +43,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ToDoViewHolder holder, int position) {
-        if (toDoList.size()>0){
+        if (toDoList.size() > 0) {
             holder.title.setText(toDoList.get(position).getTitle());
             holder.line.setImageLevel(20);
             holder.date.setText(DateUtils.getRelativeTimeSpanString(toDoList.get(position).getCreateDate()));
@@ -65,19 +59,17 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                 intent.putExtra("TODO_ID", toDoList.get(position).getId());
                 this.context.startActivity(intent);
             });
-            if (toDoList.get(position).getStatus().equals("DONE")){
+            if (toDoList.get(position).getStatus().equals("DONE")) {
                 holder.done.setImageResource(R.drawable.ic_check_circle);
-                holder.done.setPadding(15,15,15,15);
+                holder.done.setPadding(15, 15, 15, 15);
             }
             holder.done.setOnClickListener(v -> {
                 toDoList.get(position).setStatus("DONE");
                 holder.done.setImageResource(R.drawable.ic_check_circle);
-                holder.done.setPadding(15,15,15,15);
+                holder.done.setPadding(15, 15, 15, 15);
 
             });
-//            setAnimation(holder.itemView, position);
-        }
-        else{
+        } else {
             holder.itemView.setOnClickListener(v -> this.context.startActivity(new Intent(context, CreateTaskActivity_.class)));
         }
 
@@ -86,7 +78,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
     @Override
     public int getItemCount() {
-        return toDoList.size() > 0 ?toDoList.size(): 1;
+        return toDoList.size() > 0 ? toDoList.size() : 1;
     }
 
     public void removeItem(int adapterPosition) {

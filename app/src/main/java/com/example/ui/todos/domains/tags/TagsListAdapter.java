@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ui.todos.db.model.Tags;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 

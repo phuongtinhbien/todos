@@ -55,7 +55,6 @@ public class CustomViewPager extends ViewPager implements ViewPager.PageTransfor
             scroller.set(this, mScroller);
         } catch (Exception ignored) {
         }
-//        setScrollDuration(1000);
     }
 
 

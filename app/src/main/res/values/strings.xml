@@ -4,4 +4,6 @@
     <!--weather-->
 
     <string name="weather_cloudy" translatable="false">&#xf013;</string>
+
+
 </resources>

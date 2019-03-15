@@ -61,10 +61,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     RecyclerView todoList;
 
     private List<ToDo> toDos;
-    private int currIndex;
 
     private ToDoListAdapter toDoListAdapter;
-    private int oldX = 0;
 
     @AfterInject
     void inject() {
@@ -93,9 +91,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
         SwipeToDeleteCallback.RecyclerItemTouchHelperListener listener = (viewHolder, direction, position) -> {
             if (viewHolder instanceof ToDoViewHolder) {
-                String name = toDos.get(viewHolder.getAdapterPosition()).getTitle();
                 final ToDo deletedItem = toDos.get(viewHolder.getAdapterPosition());
-                final int deletedIndex = viewHolder.getAdapterPosition();
                 toDoListAdapter.removeItem(viewHolder.getAdapterPosition());
                 this.toDos.remove(deletedItem);
                 presenter.deleteToDo(deletedItem);
