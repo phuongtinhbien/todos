@@ -19,7 +19,7 @@ public interface TagsDao {
     @Query("SELECT * FROM TAGS_TABLE WHERE ID = :id")
     Tags get(int id);
 
-    @Query("SELECT * FROM TAGS_TABLE INNER JOIN TODO_TABLE ON TODO_TABLE.TAG = TAGS_TABLE.id WHERE TODO_TABLE.id = :toDoId LIMIT 1")
+    @Query("SELECT TAGS_TABLE.* FROM TAGS_TABLE INNER JOIN TODO_TABLE ON TODO_TABLE.TAG = TAGS_TABLE.id WHERE TODO_TABLE.id = :toDoId LIMIT 1")
     Tags getTagByToDo(int toDoId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

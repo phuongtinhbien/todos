@@ -26,8 +26,6 @@
             app:singleSelection="true">
         </com.google.android.material.chip.ChipGroup>
 
-
-
         <com.github.irshulx.Editor
             android:id="@+id/create_todo_edt_desc"
             android:layout_width="match_parent"
@@ -38,9 +36,8 @@
             android:paddingTop="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="100dp"
-
-            app:render_type="Editor"></com.github.irshulx.Editor>
-
+            app:render_type="Editor"
+            app:placeholder="Type description"/>
 
         <HorizontalScrollView
             android:id="@+id/tools"
@@ -48,10 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scrollbars="none">
-
             <include layout="@layout/editor_toolbar_linearlayout_horizontal" />
-
-
         </HorizontalScrollView>
 
         <com.google.android.material.button.MaterialButton

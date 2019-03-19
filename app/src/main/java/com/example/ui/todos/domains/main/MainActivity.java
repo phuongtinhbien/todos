@@ -100,7 +100,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
                 new SwipeToDeleteCallback(0, ItemTouchHelper.UP, listener);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(todoList);
-
     }
 
     @NonNull

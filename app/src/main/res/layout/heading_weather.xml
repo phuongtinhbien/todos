@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:textSize="32dp"
+            android:textSize="@dimen/weather_text_size"
             tools:ignore="MissingPrefix" />
         <TextView
             android:id="@+id/activity_main_tv_sub_weather"
@@ -33,7 +33,7 @@
             android:fontFamily="sans-serif-condensed-medium"
             android:text="11 - 3 - 2019"
             android:textColor="#ffffff"
-            android:textSize="18dp" />
+            android:textSize="@dimen/sub_weather_text_size" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

@@ -76,9 +76,7 @@ public class CustomPageAdpater extends PagerAdapter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             desc.render(toDoList.get(position).getDesc());
         }
-
         tag = layout.findViewById(R.id.item_todo_iv_tag);
-
         tag.setImageResource(toDoList.get(position).getTag().getIcon());
     }
 
