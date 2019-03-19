@@ -17,6 +17,7 @@ import com.example.ui.todos.db.model.Tags;
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.main.DaggerMainComponent;
+import com.example.ui.todos.ultil.Date;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorTextStyle;
@@ -33,7 +34,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +42,8 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 
 @EActivity(R.layout.activity_create_task)
-public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskPresenter> implements CreateTaskView {
+public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskPresenter>
+        implements CreateTaskView {
 
     @ViewById(R.id.create_todo_btn_save)
     MaterialButton save;
@@ -91,16 +92,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
 
     @AfterViews
     void init() {
-        save.setOnClickListener(v -> {
-            if (currToDo == null) {
-                currToDo = new ToDo();
-                currToDo.setCreateDate(Calendar.getInstance().getTime().getTime());
-            }
-            currToDo.setTitle(title.getText() != null ? title.getText().toString() : " ");
-            currToDo.setDesc(editor.getContentAsHTML());
-            currToDo.setTagsId(tagsList.get(currTag).getId());
-            presenter.createToDo(currToDo);
-        });
+        save.setOnClickListener(v -> createNewTask());
         tags.setSingleSelection(true);
         tags.setOnCheckedChangeListener((chipGroup, i) -> {
             Chip curr = chipGroup.findViewById(chipGroup.getCheckedChipId());
@@ -136,17 +128,24 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     }
 
     private void setUpEditor() {
-        findViewById(R.id.action_bold).setOnClickListener(v -> editor.updateTextStyle(EditorTextStyle.BOLD));
-        findViewById(R.id.action_Italic).setOnClickListener(v -> editor.updateTextStyle(EditorTextStyle.ITALIC));
-        findViewById(R.id.action_blockquote).setOnClickListener(v -> editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE));
-        findViewById(R.id.action_unordered_numbered).setOnClickListener(v -> editor.insertList(true));
-        findViewById(R.id.action_insert_image).setOnClickListener(v -> editor.openImagePicker());
-        findViewById(R.id.action_insert_link).setOnClickListener(v -> editor.insertLink());
+        findViewById(R.id.action_bold)
+                .setOnClickListener(v -> editor.updateTextStyle(EditorTextStyle.BOLD));
+        findViewById(R.id.action_Italic)
+                .setOnClickListener(v -> editor.updateTextStyle(EditorTextStyle.ITALIC));
+        findViewById(R.id.action_blockquote)
+                .setOnClickListener(v -> editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE));
+        findViewById(R.id.action_unordered_numbered)
+                .setOnClickListener(v -> editor.insertList(true));
+        findViewById(R.id.action_insert_image)
+                .setOnClickListener(v -> editor.openImagePicker());
+        findViewById(R.id.action_insert_link)
+                .setOnClickListener(v -> editor.insertLink());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == editor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == editor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK
+                && data != null && data.getData() != null) {
             this.currUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), this.currUri);
@@ -166,10 +165,8 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     public void showToDo(ToDo toDo) {
         currToDo = toDo;
         System.out.println(toDo.getTitle());
-//        titleAct.setText(getString(R.string.edit_task));
         title.setText(toDo.getTitle());
         editor.render(toDo.getDesc());
-        editor.render();
     }
 
     @Override
@@ -178,10 +175,11 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
         chipIdList = new ArrayList<>();
         for (Tags i : t) {
             Chip newChip = new Chip(this);
-            chipIdList.add(newChip);
             newChip.setCheckable(true);
             newChip.setChipIconResource(i.getIcon());
             newChip.setText(i.getName());
+            newChip.setId(View.generateViewId());
+            System.out.println("TAG_ID: " + newChip.getId());
             if (currToDo != null && currToDo.getTagsId() == i.getId()) {
                 newChip.setChecked(true);
             }
@@ -195,6 +193,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
                     this.currTag = chipIdList.indexOf(curr);
                 }
             });
+            chipIdList.add(newChip);
             tags.addView(newChip);
         }
     }
@@ -213,5 +212,16 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    private void createNewTask() {
+        if (currToDo == null) {
+            currToDo = new ToDo();
+            currToDo.setCreateDate(Date.getTime());
+        }
+        currToDo.setTitle(title.getText() != null ? title.getText().toString() : " ");
+        currToDo.setDesc(editor.getContentAsHTML());
+        currToDo.setTagsId(tagsList.get(currTag).getId());
+        presenter.createToDo(currToDo);
     }
 }

@@ -6,7 +6,6 @@ import com.example.ui.todos.db.model.ToDo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -98,6 +97,11 @@ public class DbHelperImpl implements DBHelper {
     @Override
     public Observable<Tags> getTag(int id) {
         return Observable.fromCallable(() -> db.tagsDao().get(id)).subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<Tags> getTagByToDo(int id) {
+        return Observable.fromCallable(() -> db.tagsDao().getTagByToDo(id)).subscribeOn(Schedulers.io());
     }
 
 }

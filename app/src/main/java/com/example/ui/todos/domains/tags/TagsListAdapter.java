@@ -25,7 +25,8 @@ public class TagsListAdapter extends RecyclerView.Adapter<TagsViewHolder> {
     @NonNull
     @Override
     public TagsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(com.example.ui.todos.R.layout.item_tags, parent, false);
+        View v = LayoutInflater.from(context)
+                .inflate(com.example.ui.todos.R.layout.item_tags, parent, false);
         return new TagsViewHolder(v);
     }
 

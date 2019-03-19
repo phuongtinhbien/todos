@@ -38,14 +38,10 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
                 dbHelper.getTag(i.getTagsId()).subscribe(new Observer<Tags>() {
                     @Override
                     public void onCompleted() {
-
                     }
-
                     @Override
                     public void onError(Throwable e) {
-
                     }
-
                     @Override
                     public void onNext(Tags tags) {
                         i.setTag(tags);
@@ -57,21 +53,24 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
             @Override
             public void onCompleted() {
             }
-
             @Override
             public void onError(Throwable e) {
             }
-
             @Override
             public void onNext(List<ToDo> toDos) {
                 getView().showListTodo(toDos);
             }
         });
-
     }
 
     public void deleteToDo(ToDo... toDos) {
-        dbHelper.deleteToDo(toDos).observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> getView().notify(aBoolean));
+        dbHelper.deleteToDo(toDos).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> getView().notify(aBoolean));
+    }
+
+    public void updateToDo(ToDo... toDos) {
+        dbHelper.updateToDo(toDos).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> getView().notify(aBoolean));
     }
 
 
@@ -103,4 +102,6 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
             }
         });
     }
+
+
 }

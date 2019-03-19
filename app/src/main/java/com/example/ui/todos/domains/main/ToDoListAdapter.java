@@ -67,10 +67,11 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                 toDoList.get(position).setStatus("DONE");
                 holder.done.setImageResource(R.drawable.ic_check_circle);
                 holder.done.setPadding(15, 15, 15, 15);
-
+                ((MainActivity) context).getPresenter().updateToDo(toDoList.get(position));
             });
         } else {
-            holder.itemView.setOnClickListener(v -> this.context.startActivity(new Intent(context, CreateTaskActivity_.class)));
+            holder.itemView.setOnClickListener(v -> this.context
+                    .startActivity(new Intent(context, CreateTaskActivity_.class)));
         }
 
 
@@ -85,4 +86,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
         toDoList.remove(adapterPosition);
         notifyItemRemoved(adapterPosition);
     }
+
+
 }

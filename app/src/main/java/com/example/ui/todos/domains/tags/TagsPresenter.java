@@ -20,7 +20,8 @@ public class TagsPresenter extends MvpBasePresenter<TagsView> {
     }
 
     protected void getAllTag() {
-        dbHelper.listAllTags().observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<Tags>>() {
+        dbHelper.listAllTags().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Tags>>() {
             @Override
             public void onCompleted() {
             }
@@ -39,7 +40,8 @@ public class TagsPresenter extends MvpBasePresenter<TagsView> {
 
 
     public void deleteTags(Tags... tags) {
-        dbHelper.deleteTags(tags).observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> getView().notify(aBoolean));
+        dbHelper.deleteTags(tags).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> getView().notify(aBoolean));
     }
 
     public void setDbHelper(DBHelper dbHelper) {

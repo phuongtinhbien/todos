@@ -78,4 +78,5 @@ dependencies {
     implementation 'net.hockeyapp.android:HockeySDK:5.1.1'
     androidTestImplementation 'androidx.test:rules:1.1.1'
     androidTestImplementation 'androidx.test:runner:1.1.1'
+    implementation 'com.github.ReactiveX:RxKotlin:2.x-SNAPSHOT'
 }

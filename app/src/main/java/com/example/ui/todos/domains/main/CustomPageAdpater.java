@@ -53,7 +53,6 @@ public class CustomPageAdpater extends PagerAdapter {
                 intent.putExtra("TODO_ID", toDoList.get(position).getId());
                 this.context.startActivity(intent);
             });
-
             init(layout, position);
         }
         container.addView(layout);

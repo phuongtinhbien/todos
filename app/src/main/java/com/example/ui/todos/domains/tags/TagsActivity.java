@@ -61,7 +61,6 @@ public class TagsActivity extends BaseActivity<TagsView, TagsPresenter> implemen
         };
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new SwipeToDeleteCallback(listener);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(tags);
-
     }
 
     @NonNull

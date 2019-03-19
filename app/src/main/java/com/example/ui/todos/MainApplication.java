@@ -10,6 +10,7 @@ import com.example.ui.todos.infrastructures.NetComponent;
 import com.example.ui.todos.infrastructures.NetModule;
 import com.example.ui.todos.infrastructures.WeatherComponent;
 import com.example.ui.todos.infrastructures.WeatherModule;
+import com.example.ui.todos.ultil.Date;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
@@ -101,7 +102,8 @@ public class MainApplication extends MultiDexApplication {
 
     private void generateTags (){
         System.out.println("GENERATE");
-        getApplicationComponent().dbHelper().listAllTags().observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<Tags>>() {
+        getApplicationComponent().dbHelper().listAllTags().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Tags>>() {
             @Override
             public void onCompleted() {
             }
@@ -114,12 +116,12 @@ public class MainApplication extends MultiDexApplication {
             public void onNext(List<Tags> toDos) {
                 if (toDos.size()== 0){
                     List<Tags> tagsList = new ArrayList<>();
-                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Normal", R.drawable.ic_normal));
-                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Shopping", R.drawable.ic_shopping));
-                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Work", R.drawable.ic_work));
-                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Coffee", R.drawable.ic_coffee));
-                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"Transport", R.drawable.ic_transport));
-                    tagsList.add(new Tags(Calendar.getInstance().getTime().getTime(),"event", R.drawable.ic_event));
+                    tagsList.add(new Tags(Date.getTime(),"Normal", R.drawable.ic_normal));
+                    tagsList.add(new Tags(Date.getTime(),"Shopping", R.drawable.ic_shopping));
+                    tagsList.add(new Tags(Date.getTime(),"Work", R.drawable.ic_work));
+                    tagsList.add(new Tags(Date.getTime(),"Coffee", R.drawable.ic_coffee));
+                    tagsList.add(new Tags(Date.getTime(),"Transport", R.drawable.ic_transport));
+                    tagsList.add(new Tags(Date.getTime(),"event", R.drawable.ic_event));
                     for (Tags i: tagsList) {
                         getApplicationComponent().dbHelper().saveTags(i).subscribe();
                     }

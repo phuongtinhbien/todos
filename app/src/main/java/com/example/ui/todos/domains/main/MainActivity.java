@@ -80,16 +80,16 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @SuppressLint("ClickableViewAccessibility")
     @AfterViews
     void init() {
-        createTask.setOnClickListener(v -> startActivity(new Intent(this, CreateTaskActivity_.class)));
-        date.setText(DateUtils.formatDateTime(this, Calendar.getInstance().getTimeInMillis(), DateUtils.FORMAT_SHOW_WEEKDAY));
-        subDate.setText(DateUtils.formatDateTime(this, Calendar.getInstance().getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE));
-
+        createTask.setOnClickListener(v -> startActivity(
+                new Intent(this, CreateTaskActivity_.class)));
+        date.setText(DateUtils.formatDateTime(this,
+                Calendar.getInstance().getTimeInMillis(), DateUtils.FORMAT_SHOW_WEEKDAY));
+        subDate.setText(DateUtils.formatDateTime(this,
+                Calendar.getInstance().getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE));
         SnapHelper snapHelper = new PagerSnapHelper();
-
         snapHelper.attachToRecyclerView(todoList);
-
-
-        SwipeToDeleteCallback.RecyclerItemTouchHelperListener listener = (viewHolder, direction, position) -> {
+        SwipeToDeleteCallback.RecyclerItemTouchHelperListener listener =
+                (viewHolder, direction, position) -> {
             if (viewHolder instanceof ToDoViewHolder) {
                 final ToDo deletedItem = toDos.get(viewHolder.getAdapterPosition());
                 toDoListAdapter.removeItem(viewHolder.getAdapterPosition());
@@ -97,7 +97,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 presenter.deleteToDo(deletedItem);
             }
         };
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new SwipeToDeleteCallback(0, ItemTouchHelper.UP, listener);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
+                new SwipeToDeleteCallback(0, ItemTouchHelper.UP, listener);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(todoList);
 
     }

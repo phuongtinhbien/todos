@@ -32,4 +32,6 @@ public interface DBHelper {
 
     Observable<Tags> getTag (int id);
 
+    Observable<Tags> getTagByToDo (int id);
+
 }
