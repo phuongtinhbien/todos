@@ -61,6 +61,6 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/create_todo_layout" />
+    <include layout="@layout/create_todo" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_cv_more"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="32dp"
+    android:layout_marginRight="32dp"
+    android:layout_weight="1"
+    app:cardBackgroundColor="#3C516C86"
+    app:cardCornerRadius="@dimen/radius"
+    app:cardElevation="0dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center_vertical|end"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/activity_main_tv_weather"
+            fontPath="fonts/weathericons.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="32dp"
+            tools:ignore="MissingPrefix" />
+        <TextView
+            android:id="@+id/activity_main_tv_sub_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="11 - 3 - 2019"
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
