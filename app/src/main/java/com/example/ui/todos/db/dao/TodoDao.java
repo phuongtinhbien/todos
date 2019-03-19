@@ -3,6 +3,7 @@ package com.example.ui.todos.db.dao;
 
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.db.model.ToDoWithTags;
+import com.example.ui.todos.ultil.Date;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import androidx.room.Update;
 @Dao
 public interface TodoDao {
 
-    @Query("SELECT * FROM TODO_TABLE ORDER BY CREATE_DATE DESC")
+    @Query("SELECT * FROM TODO_TABLE WHERE STATUS NOT LIKE 'DONE' ORDER BY TIME_RUN ASC")
     List<ToDo> list();
 
     @Query("SELECT * FROM TODO_TABLE WHERE ID = :id")

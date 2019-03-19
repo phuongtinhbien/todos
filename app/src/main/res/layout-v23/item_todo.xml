@@ -32,7 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_margin="@dimen/margin">
+                android:layout_margin="@dimen/margin"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/item_todo_iv_tag"
@@ -42,6 +43,15 @@
                     android:scaleType="centerInside"
                     android:tint="@color/colorPrimaryDark"
                     app:srcCompat="@drawable/ic_profile" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/item_todo_btn_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:text="19/09/2019 15:13"
+                    android:textColor="@android:color/darker_gray"
+                    app:cornerRadius="8dp"/>
             </LinearLayout>
 
             <LinearLayout

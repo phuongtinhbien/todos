@@ -38,6 +38,9 @@ public class SettingsActivity extends BaseActivity<SettingView, SettingsPresente
     @ViewById(R.id.activity_settings_content_config)
     CardView itemConfig;
 
+    @ViewById(R.id.activity_settings_content_tags_done)
+    CardView itemTagsDone;
+
     @AfterInject
     void inject() {
         DaggerSettingsComponent.builder()
@@ -50,6 +53,7 @@ public class SettingsActivity extends BaseActivity<SettingView, SettingsPresente
     void init() {
         initItem(itemTags, R.drawable.ic_tags, "All Tags", "Manage all your created tags", "");
         initItem(itemConfig, R.drawable.ic_settings, "Configuration", "Change color, theme, language,..", "");
+        initItem(itemTagsDone, R.drawable.ic_check_circle, "Done Tags", "All your finished tasks", "");
     }
 
     @Click(R.id.activity_settings_content_tags)

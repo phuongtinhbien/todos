@@ -132,7 +132,7 @@ public class MainApplication extends MultiDexApplication {
                             tagsList.add(new Tags(Date.getTime(), "Work", R.drawable.ic_work));
                             tagsList.add(new Tags(Date.getTime(), "Coffee", R.drawable.ic_coffee));
                             tagsList.add(new Tags(Date.getTime(), "Transport", R.drawable.ic_transport));
-                            tagsList.add(new Tags(Date.getTime(), "event", R.drawable.ic_event));
+                            tagsList.add(new Tags(Date.getTime(), "Event", R.drawable.ic_event));
                             for (Tags i : tagsList) {
                                 getApplicationComponent().dbHelper().saveTags(i).subscribe();
                             }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private RecyclerItemTouchHelperListener listener;
+    private boolean mSwipable = true;
 
 
     public SwipeToDeleteCallback(int dragDirs, int swipeDirs, RecyclerItemTouchHelperListener listener) {
@@ -73,5 +74,12 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
         void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position);
     }
 
+    @Override
+    public boolean isItemViewSwipeEnabled() {
+        return mSwipable;
+    }
 
+    public void setmSwipable(boolean mSwipable) {
+        this.mSwipable = mSwipable;
+    }
 }

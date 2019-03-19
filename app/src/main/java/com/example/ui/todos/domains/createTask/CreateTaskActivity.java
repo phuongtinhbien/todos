@@ -1,11 +1,13 @@
 package com.example.ui.todos.domains.createTask;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +18,6 @@ import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.Tags;
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
-import com.example.ui.todos.domains.main.DaggerMainComponent;
 import com.example.ui.todos.ultil.Date;
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
@@ -34,6 +35,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +64,9 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     @ViewById(R.id.create_todo_cg_tags)
     ChipGroup tags;
 
+    @ViewById(R.id.create_todo_btn_time)
+    MaterialButton time;
+
     @App
     MainApplication application;
 
@@ -74,6 +79,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
 
     private ToDo currToDo;
 
+    private long chosenTime;
     private Uri currUri;
 
     @NonNull
@@ -105,7 +111,8 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
         editor.render();
         editor.setEditorListener(new EditorListener() {
             @Override
-            public void onTextChanged(EditText editText, Editable text) {}
+            public void onTextChanged(EditText editText, Editable text) {
+            }
 
             @Override
             public void onUpload(Bitmap image, String uuid) {
@@ -118,6 +125,17 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
             }
         });
         setUpEditor();
+        time.setText(DateUtils.formatDateTime(this, Date.getTime(), DateUtils.FORMAT_SHOW_DATE));
+        time.setOnClickListener(v -> {
+            DatePickerDialog datePickerDialog =
+                    new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+                        time.setText(dayOfMonth + "/" + month + "/" + year);
+                        chosenTime = Date.getTime(dayOfMonth, month, year);
+                    }, Calendar.getInstance().get(Calendar.YEAR),
+                            Calendar.getInstance().get(Calendar.MONTH),
+                            Calendar.getInstance().get(Calendar.DATE));
+            datePickerDialog.show();
+        });
     }
 
     @Override
@@ -168,6 +186,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
         System.out.println(toDo.getTitle());
         title.setText(toDo.getTitle());
         editor.render(toDo.getDesc());
+        time.setText(DateUtils.formatDateTime(this, toDo.getTimeRun(), DateUtils.FORMAT_SHOW_DATE));
     }
 
     @Override
@@ -219,6 +238,10 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
         if (currToDo == null) {
             currToDo = new ToDo();
             currToDo.setCreateDate(Date.getTime());
+            currToDo.setTimeRun(Date.getTime());
+        }
+        if (chosenTime != 0) {
+            currToDo.setTimeRun(chosenTime);
         }
         currToDo.setTitle(title.getText() != null ? title.getText().toString() : " ");
         currToDo.setDesc(editor.getContentAsHTML());

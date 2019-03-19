@@ -12,7 +12,6 @@ import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.createTask.CreateTaskActivity_;
 import com.example.ui.todos.domains.settings.SettingsActivity_;
-import com.example.ui.todos.domains.tags.TagsActivity_;
 import com.example.ui.todos.model.weather.response.WeatherResponse;
 import com.google.android.material.button.MaterialButton;
 
@@ -64,6 +63,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     private List<ToDo> toDos;
 
     private ToDoListAdapter toDoListAdapter;
+    private ItemTouchHelper.SimpleCallback itemTouchHelperCallback;
+    private SwipeToDeleteCallback.RecyclerItemTouchHelperListener listener;
 
     @AfterInject
     void inject() {
@@ -89,18 +90,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 Calendar.getInstance().getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE));
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(todoList);
-        SwipeToDeleteCallback.RecyclerItemTouchHelperListener listener =
-                (viewHolder, direction, position) -> {
-            if (viewHolder instanceof ToDoViewHolder) {
-                final ToDo deletedItem = toDos.get(viewHolder.getAdapterPosition());
-                toDoListAdapter.removeItem(viewHolder.getAdapterPosition());
-                this.toDos.remove(deletedItem);
-                presenter.deleteToDo(deletedItem);
-            }
-        };
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
-                new SwipeToDeleteCallback(0, ItemTouchHelper.UP, listener);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(todoList);
+    }
+
+    @Click(R.id.activity_main_cv_more)
+    protected void moreClick() {
+        startActivity(new Intent(this, SettingsActivity_.class));
     }
 
     @NonNull
@@ -114,12 +108,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         this.toDos = toDos;
         toDoListAdapter = new ToDoListAdapter(this, this.toDos);
         this.todoList.setAdapter(toDoListAdapter);
-
-        if (toDos == null || toDos.size() == 0) {
-            createTask.setVisibility(View.GONE);
-        } else {
-            createTask.setVisibility(View.VISIBLE);
-        }
+        updateUI();
     }
 
     @Override
@@ -142,9 +131,24 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         presenter.getAllToDo();
     }
 
-    @Click(R.id.activity_main_cv_more)
-    protected void moreClick() {
-        startActivity(new Intent(this, SettingsActivity_.class));
+    private void updateUI() {
+        if (toDos != null && toDos.size() != 0) {
+            listener = (viewHolder, direction, position) -> {
+                        final ToDo deletedItem = toDos.get(viewHolder.getAdapterPosition());
+                        toDoListAdapter.removeItem(viewHolder.getAdapterPosition());
+                        this.toDos.remove(deletedItem);
+                        presenter.deleteToDo(deletedItem);
+                        updateUI();
+                    };
+            itemTouchHelperCallback = new SwipeToDeleteCallback(0, ItemTouchHelper.UP, listener);
+            new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(todoList);
+            createTask.setVisibility(View.VISIBLE);
+        } else {
+            if (itemTouchHelperCallback != null) {
+                ((SwipeToDeleteCallback) itemTouchHelperCallback).setmSwipable(false);
+            }
+            createTask.setVisibility(View.GONE);
+        }
     }
 
 }

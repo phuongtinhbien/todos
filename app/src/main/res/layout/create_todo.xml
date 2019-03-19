@@ -13,10 +13,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
         android:orientation="vertical">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/create_todo_btn_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            app:icon="@drawable/ic_time"
+            android:text="19/09/2019 15:13"
+            app:backgroundTint="@color/darkblue"
+            app:cornerRadius="8dp"/>
         <com.google.android.material.chip.ChipGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

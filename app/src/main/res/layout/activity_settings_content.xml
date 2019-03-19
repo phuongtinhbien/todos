@@ -45,6 +45,7 @@
             app:cardElevation="4dp"
             app:cardCornerRadius="8dp"
             android:layout_margin="@dimen/margin"
+            android:id="@+id/activity_settings_content_tags_done"
             >
             <include layout="@layout/recycler_view_item"
                 android:layout_margin="@dimen/margin"

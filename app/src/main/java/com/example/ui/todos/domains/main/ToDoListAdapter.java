@@ -71,6 +71,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                 holder.done.setPadding(15, 15, 15, 15);
                 ((MainActivity) context).getPresenter().updateToDo(toDoList.get(position));
             });
+            holder.time.setText(DateUtils.formatDateTime(context, toDoList.get(position).getTimeRun(), DateUtils.FORMAT_SHOW_DATE));
         } else {
             holder.itemView.setOnClickListener(v -> this.context
                     .startActivity(new Intent(context, CreateTaskActivity_.class)));
