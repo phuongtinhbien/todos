@@ -17,6 +17,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.example.ui.todos.ultil.ShareKey.TODO_ID;
+
 public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
     private Context context;
@@ -56,7 +58,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
             holder.tag.setImageResource(toDoList.get(position).getTag().getIcon());
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, CreateTaskActivity_.class);
-                intent.putExtra("TODO_ID", toDoList.get(position).getId());
+                intent.putExtra(TODO_ID, toDoList.get(position).getId());
                 this.context.startActivity(intent);
             });
             if (toDoList.get(position).getStatus().equals("DONE")) {

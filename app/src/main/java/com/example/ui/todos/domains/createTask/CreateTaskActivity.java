@@ -41,6 +41,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 
+import static com.example.ui.todos.ultil.ShareKey.TODO_ID;
+
 @EActivity(R.layout.activity_create_task)
 public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskPresenter>
         implements CreateTaskView {
@@ -82,7 +84,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
 
     @AfterInject
     void inject() {
-        DaggerMainComponent.builder()
+        DaggerCreateTaskComponent.builder()
                 .applicationComponent(application.getApplicationComponent())
                 .build()
                 .inject(this);
@@ -103,8 +105,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
         editor.render();
         editor.setEditorListener(new EditorListener() {
             @Override
-            public void onTextChanged(EditText editText, Editable text) {
-            }
+            public void onTextChanged(EditText editText, Editable text) {}
 
             @Override
             public void onUpload(Bitmap image, String uuid) {
@@ -202,7 +203,7 @@ public class CreateTaskActivity extends BaseActivity<CreateTaskView, CreateTaskP
     protected void onResume() {
         super.onResume();
         Intent intent = getIntent();
-        int toDoId = intent.getIntExtra("TODO_ID", -1);
+        int toDoId = intent.getIntExtra(TODO_ID, -1);
         if (toDoId > 0)
             presenter.getToDo(toDoId);
 

@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#156c9d</color>
     <color name="colorAccent">#156c9d</color>
     <color name="gray_background">#FAE4E4E4</color>
+    <color name="heading_weather_bg">#3C516C86</color>
 </resources>

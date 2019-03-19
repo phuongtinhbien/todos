@@ -5,6 +5,7 @@
 
     <string name="weather_cloudy" translatable="false">&#xf013;</string>
     <string name="remove">Remove</string>
+    <string name="settings">Settings</string>
 
 
 </resources>

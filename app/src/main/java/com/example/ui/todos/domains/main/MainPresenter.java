@@ -18,6 +18,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.example.ui.todos.ultil.ShareKey.APP_ID;
 
 
 public class MainPresenter extends MvpBasePresenter<MainView> {
@@ -26,7 +27,7 @@ public class MainPresenter extends MvpBasePresenter<MainView> {
 
     private WeatherService weatherService;
 
-    private static final String APP_ID = "db4387c29f797846670702813720e109";
+
 
     @Inject
     public MainPresenter() {

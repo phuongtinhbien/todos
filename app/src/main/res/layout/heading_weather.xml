@@ -6,7 +6,7 @@
     android:layout_marginEnd="32dp"
     android:layout_marginRight="32dp"
     android:layout_weight="1"
-    app:cardBackgroundColor="#3C516C86"
+    app:cardBackgroundColor="@color/heading_weather_bg"
     app:cardCornerRadius="@dimen/radius"
     app:cardElevation="0dp"
     xmlns:android="http://schemas.android.com/apk/res/android"

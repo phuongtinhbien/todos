@@ -1,5 +1,7 @@
 package com.example.ui.todos;
 
+import android.content.SharedPreferences;
+
 import com.example.ui.todos.db.model.Tags;
 import com.example.ui.todos.infrastructures.ApplicationComponent;
 import com.example.ui.todos.infrastructures.ApplicationModule;
@@ -20,13 +22,17 @@ import net.hockeyapp.android.CrashManager;
 import org.androidannotations.annotations.EApplication;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import androidx.multidex.MultiDexApplication;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
+import static com.example.ui.todos.ultil.ShareKey.END_POINT_WEATHER;
+import static com.example.ui.todos.ultil.ShareKey.LANG_KEY;
+import static com.example.ui.todos.ultil.ShareKey.THEME_KEY;
+import static com.example.ui.todos.ultil.ShareKey.TODO_SHARE_KEY;
 
 
 @EApplication
@@ -37,7 +43,10 @@ public class MainApplication extends MultiDexApplication {
     private WeatherComponent weatherComponent;
 
     private NetComponent netComponent;
-    private static final String END_POINT_WEATHER = "http://api.openweathermap.org";
+
+
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     public void onCreate() {
@@ -48,7 +57,7 @@ public class MainApplication extends MultiDexApplication {
                 .setEncryptionMethod(HawkBuilder.EncryptionMethod.MEDIUM)
                 .setStorage(HawkBuilder.newSharedPrefStorage(this)).build();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/weathericons.ttf")
+//                .setDefaultFontPath("fonts/weathericons.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
@@ -69,6 +78,8 @@ public class MainApplication extends MultiDexApplication {
 
         generateTags();
         checkForCrashes();
+        initSharePreference();
+        configTheme();
     }
 
 
@@ -100,37 +111,62 @@ public class MainApplication extends MultiDexApplication {
         CrashManager.register(this);
     }
 
-    private void generateTags (){
+    private void generateTags() {
         System.out.println("GENERATE");
         getApplicationComponent().dbHelper().listAllTags().observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Tags>>() {
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onNext(List<Tags> toDos) {
-                if (toDos.size()== 0){
-                    List<Tags> tagsList = new ArrayList<>();
-                    tagsList.add(new Tags(Date.getTime(),"Normal", R.drawable.ic_normal));
-                    tagsList.add(new Tags(Date.getTime(),"Shopping", R.drawable.ic_shopping));
-                    tagsList.add(new Tags(Date.getTime(),"Work", R.drawable.ic_work));
-                    tagsList.add(new Tags(Date.getTime(),"Coffee", R.drawable.ic_coffee));
-                    tagsList.add(new Tags(Date.getTime(),"Transport", R.drawable.ic_transport));
-                    tagsList.add(new Tags(Date.getTime(),"event", R.drawable.ic_event));
-                    for (Tags i: tagsList) {
-                        getApplicationComponent().dbHelper().saveTags(i).subscribe();
+                    @Override
+                    public void onCompleted() {
                     }
-                }
 
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Tags> toDos) {
+                        if (toDos.size() == 0) {
+                            List<Tags> tagsList = new ArrayList<>();
+                            tagsList.add(new Tags(Date.getTime(), "Normal", R.drawable.ic_normal));
+                            tagsList.add(new Tags(Date.getTime(), "Shopping", R.drawable.ic_shopping));
+                            tagsList.add(new Tags(Date.getTime(), "Work", R.drawable.ic_work));
+                            tagsList.add(new Tags(Date.getTime(), "Coffee", R.drawable.ic_coffee));
+                            tagsList.add(new Tags(Date.getTime(), "Transport", R.drawable.ic_transport));
+                            tagsList.add(new Tags(Date.getTime(), "event", R.drawable.ic_event));
+                            for (Tags i : tagsList) {
+                                getApplicationComponent().dbHelper().saveTags(i).subscribe();
+                            }
+                        }
+
+                    }
+                });
 
 
     }
+
+    private void initSharePreference() {
+        preferences = getSharedPreferences(TODO_SHARE_KEY, MODE_PRIVATE);
+        editor = preferences.edit();
+        if (preferences.getInt(THEME_KEY, -1) != -1) {
+            editor.putInt(THEME_KEY, R.style.AppTheme_NoActionBar);
+        }
+        preferences.registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
+            if (key.equals(THEME_KEY)) {
+                configTheme();
+            }
+            if (key.equals(LANG_KEY)) {
+            }
+        });
+    }
+
+    private void configTheme() {
+        setTheme(preferences.getInt(THEME_KEY, R.style.AppTheme_NoActionBar));
+
+    }
+
+    public SharedPreferences getPreferences() {
+        return preferences;
+    }
+
 
 }

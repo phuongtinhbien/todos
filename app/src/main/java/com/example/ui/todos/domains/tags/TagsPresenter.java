@@ -23,12 +23,10 @@ public class TagsPresenter extends MvpBasePresenter<TagsView> {
         dbHelper.listAllTags().observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Tags>>() {
             @Override
-            public void onCompleted() {
-            }
+            public void onCompleted() {}
 
             @Override
-            public void onError(Throwable e) {
-            }
+            public void onError(Throwable e) {}
 
             @Override
             public void onNext(List<Tags> toDos) {

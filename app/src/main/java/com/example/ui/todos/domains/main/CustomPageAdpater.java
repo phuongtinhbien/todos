@@ -2,7 +2,6 @@ package com.example.ui.todos.domains.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,9 +72,8 @@ public class CustomPageAdpater extends PagerAdapter {
         desc.setClickable(false);
         desc.setEditorListener(null);
         desc.setFocusable(false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            desc.render(toDoList.get(position).getDesc());
-        }
+        desc.render(toDoList.get(position).getDesc());
+
         tag = layout.findViewById(R.id.item_todo_iv_tag);
         tag.setImageResource(toDoList.get(position).getTag().getIcon());
     }

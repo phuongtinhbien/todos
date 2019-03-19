@@ -13,6 +13,4 @@ public abstract class MainComponent {
     public abstract MainPresenter presenter();
 
     public abstract void inject(MainActivity mainActivity);
-
-    public abstract void inject(CreateTaskActivity createTaskActivity);
 }

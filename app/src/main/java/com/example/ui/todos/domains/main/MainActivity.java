@@ -11,6 +11,7 @@ import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.ToDo;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.createTask.CreateTaskActivity_;
+import com.example.ui.todos.domains.settings.SettingsActivity_;
 import com.example.ui.todos.domains.tags.TagsActivity_;
 import com.example.ui.todos.model.weather.response.WeatherResponse;
 import com.google.android.material.button.MaterialButton;
@@ -143,7 +144,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Click(R.id.activity_main_cv_more)
     protected void moreClick() {
-        startActivity(new Intent(this, TagsActivity_.class));
+        startActivity(new Intent(this, SettingsActivity_.class));
     }
 
 }
