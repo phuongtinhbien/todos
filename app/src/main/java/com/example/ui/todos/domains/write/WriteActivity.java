@@ -19,6 +19,7 @@ import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.word.DaggerWordComponent;
 import com.example.ui.todos.domains.word.WordListAdapter;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -54,6 +55,7 @@ public class WriteActivity extends BaseActivity<WriteView, WritePresenter> imple
     private List<Word> words;
     private int position = 0;
     private int point = 0;
+    private FirebaseAuth mAuth;
 
 
     @AfterInject
@@ -87,6 +89,8 @@ public class WriteActivity extends BaseActivity<WriteView, WritePresenter> imple
 
             }
         });
+        mAuth = FirebaseAuth.getInstance();
+        tvName.setText(mAuth.getCurrentUser().getDisplayName());
     }
 
     @Click(R.id.btnCheck)

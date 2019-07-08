@@ -20,6 +20,7 @@ import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.word.WordListAdapter;
 import com.example.ui.todos.ultil.AudioPlayer;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -71,6 +72,7 @@ public class TestActivity extends BaseActivity<TestView, TestPresenter> implemen
     private String answer = "";
     private String code;
     private String codeName;
+    private FirebaseAuth mAuth;
 
     @AfterInject
     void inject() {
@@ -95,6 +97,8 @@ public class TestActivity extends BaseActivity<TestView, TestPresenter> implemen
         two.setOnClickListener(this);
         three.setOnClickListener(this);
         four.setOnClickListener(this);
+        mAuth = FirebaseAuth.getInstance();
+        tvName.setText(mAuth.getCurrentUser().getDisplayName());
     }
 
     @Click(R.id.btnCheck)

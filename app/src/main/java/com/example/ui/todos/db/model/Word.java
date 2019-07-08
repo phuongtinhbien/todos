@@ -21,11 +21,6 @@ public class Word {
     @ColumnInfo (name = "pro")
     private String pro;
 
-    @ColumnInfo(name = "CREATE_DATE")
-    private long createDate;
-
-    @ColumnInfo(name = "UPDATE_DATE")
-    private long updateDate;
 
     public Word(String word, String mean, String type, String pro) {
         this.word = word;
@@ -74,19 +69,6 @@ public class Word {
         this.pro = pro;
     }
 
-    public long getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(long createDate) {
-        this.createDate = createDate;
-    }
-
-    public long getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(long updateDate) {
-        this.updateDate = updateDate;
+    public Word() {
     }
 }

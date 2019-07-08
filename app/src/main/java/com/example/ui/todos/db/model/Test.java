@@ -33,6 +33,8 @@ public class Test {
     @ColumnInfo(name = "RIGHT_ANSWER")
     private String rightAnswer;
 
+    public Test() {
+    }
 
     public Test(String group, String question, String answer1, String answer2, String answer3, String answer4, String rightAnswer) {
         this.group = group;

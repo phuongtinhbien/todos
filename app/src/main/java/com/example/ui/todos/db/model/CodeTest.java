@@ -3,9 +3,11 @@ package com.example.ui.todos.db.model;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "CODE_TABLE")
+@Entity(tableName = "CODE_TABLE", indices = {@Index(value = {"CODE"},
+        unique = true)})
 public class CodeTest {
 
     @PrimaryKey(autoGenerate = true)
@@ -14,6 +16,9 @@ public class CodeTest {
     private String name;
     @ColumnInfo(name = "CODE")
     private String code;
+
+    public CodeTest() {
+    }
 
     public CodeTest(String name, String code) {
         this.name = name;

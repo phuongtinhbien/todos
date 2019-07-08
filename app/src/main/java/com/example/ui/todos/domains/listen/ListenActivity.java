@@ -25,6 +25,7 @@ import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.word.WordListAdapter;
 import com.example.ui.todos.ultil.AudioPlayer;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -74,6 +75,7 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
     private List<String> answers;
 
     private String answer = "";
+    private FirebaseAuth mAuth;
 
     @AfterInject
     void inject() {
@@ -89,10 +91,12 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
     @SuppressLint("ClickableViewAccessibility")
     @AfterViews
     void init() {
-      one.setOnClickListener(this);
-      two.setOnClickListener(this);
-      three.setOnClickListener(this);
-      four.setOnClickListener(this);
+        one.setOnClickListener(this);
+        two.setOnClickListener(this);
+        three.setOnClickListener(this);
+        four.setOnClickListener(this);
+        mAuth = FirebaseAuth.getInstance();
+        tvName.setText(mAuth.getCurrentUser().getDisplayName());
     }
 
     @Click(R.id.btnCheck)
@@ -132,8 +136,6 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
                 initAnswer();
             }
         }
-
-
 
 
     }
@@ -198,7 +200,7 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
         String res = "";
         Random random = new Random();
 
-        while (true){
+        while (true) {
             int ind = random.nextInt(words.size());
             if (!ids.contains(words.get(ind).getId())) {
                 res = words.get(ind).getWord();
@@ -211,8 +213,6 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
     }
 
 
-
-
     private void initAnswerState() {
         one.setChecked(false);
         two.setChecked(false);
@@ -223,7 +223,7 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
     @Override
     public void onClick(View v) {
         initAnswerState();
-        if (one.getId() == v.getId()){
+        if (one.getId() == v.getId()) {
             answer = one.getText().toString().toLowerCase().trim();
             one.setChecked(true);
         } else if (two.getId() == v.getId()) {

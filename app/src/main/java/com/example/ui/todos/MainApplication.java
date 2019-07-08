@@ -2,6 +2,7 @@ package com.example.ui.todos;
 
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
 import androidx.multidex.MultiDexApplication;
 
 import com.example.ui.todos.db.model.CodeTest;
@@ -18,6 +19,11 @@ import com.example.ui.todos.infrastructures.NetModule;
 import com.example.ui.todos.infrastructures.WeatherComponent;
 import com.example.ui.todos.infrastructures.WeatherModule;
 import com.example.ui.todos.ultil.Date;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
@@ -28,6 +34,7 @@ import org.androidannotations.annotations.EApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -87,6 +94,60 @@ public class MainApplication extends MultiDexApplication {
         generateWord();
         generateCodeTest();
         generateTest();
+
+        SharedPreferences preferences = getSharedPreferences("data", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        Boolean loaded = preferences.getBoolean("loaded", false);
+        if (!loaded) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("word");
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot item: dataSnapshot.getChildren()){
+                        Word word = item.getValue(Word.class);
+                        getApplicationComponent().dbHelper().saveWord(word).subscribe();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    generateWord();
+                }
+            });
+            DatabaseReference myRefCodeText = database.getReference("codeTest");
+            myRefCodeText.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot item: dataSnapshot.getChildren()){
+                        CodeTest word = item.getValue(CodeTest.class);
+                        getApplicationComponent().dbHelper().saveCodeTest(word).subscribe();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    generateCodeTest();
+                }
+            });
+            DatabaseReference myRefTest = database.getReference("test");
+            myRefTest.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot item: dataSnapshot.getChildren()){
+                        Test word = item.getValue(Test.class);
+                        getApplicationComponent().dbHelper().saveTest(word).subscribe();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    generateTest();
+                }
+            });
+            editor.putBoolean("loaded", true);
+        }
+
     }
 
 
