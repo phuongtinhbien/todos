@@ -66,6 +66,7 @@
             android:parentActivityName=".domains.mainEnglish.MainEnglishActivity"/>
         <activity android:name=".domains.test.TestActivity_"
             android:theme="@style/AppTheme"
+            android:label="English-IT"
             android:parentActivityName=".domains.mainEnglish.MainEnglishActivity"/>
         <service android:name=".services.StartService" />
     </application>
