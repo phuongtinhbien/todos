@@ -2,7 +2,12 @@ package com.example.ui.todos;
 
 import android.content.SharedPreferences;
 
+import androidx.multidex.MultiDexApplication;
+
+import com.example.ui.todos.db.model.CodeTest;
 import com.example.ui.todos.db.model.Tags;
+import com.example.ui.todos.db.model.Test;
+import com.example.ui.todos.db.model.Word;
 import com.example.ui.todos.infrastructures.ApplicationComponent;
 import com.example.ui.todos.infrastructures.ApplicationModule;
 import com.example.ui.todos.infrastructures.DaggerApplicationComponent;
@@ -24,7 +29,6 @@ import org.androidannotations.annotations.EApplication;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.multidex.MultiDexApplication;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -58,8 +62,8 @@ public class MainApplication extends MultiDexApplication {
                 .setStorage(HawkBuilder.newSharedPrefStorage(this)).build();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
 //                .setDefaultFontPath("fonts/weathericons.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
         );
 
         setApplicationComponent(DaggerApplicationComponent
@@ -80,6 +84,9 @@ public class MainApplication extends MultiDexApplication {
         checkForCrashes();
         initSharePreference();
         configTheme();
+        generateWord();
+        generateCodeTest();
+        generateTest();
     }
 
 
@@ -166,6 +173,150 @@ public class MainApplication extends MultiDexApplication {
 
     public SharedPreferences getPreferences() {
         return preferences;
+    }
+
+    private void generateWord() {
+        System.out.println("GENERATE");
+        getApplicationComponent().dbHelper().listAllWord().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Word>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Word> toDos) {
+                        if (toDos.size() == 0) {
+                            List<Word> tagsList = new ArrayList<>();
+                            tagsList.add(new Word("Access", "Truy cập", "(v)", "ˈakˌses"));
+                            tagsList.add(new Word("Address", "Địa chỉ", "(n)", "əˈdres"));
+                            tagsList.add(new Word("Arithmetic", "Số học", "(n)", "əˈrɪθ.mə.tɪk"));
+                            tagsList.add(new Word("Cartridge", "Đầu quay đĩa", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Channel", "Kênh", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Circuit", "Mạch", "(a)", "ˈakˌses"));
+                            tagsList.add(new Word("Compiler", "Trình biên dịch", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Component", "Thành phần", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Computer", "máy tính", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Computerize ", "Tin học hóa", "(v)", "ˈakˌses"));
+                            tagsList.add(new Word("Conceptual", "Dung lượng", "(a)", "ˈakˌses"));
+                            tagsList.add(new Word("Convert", "Chuyển đổi", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Data", "Dữ liệu", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Demagnetize", "Khử từ hóa", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Device", "Thiết bị", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Electronic", "Điện tử", "(n,a)", "ˈakˌses"));
+                            tagsList.add(new Word("Equal", "Bằng", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Feature", "Thuộc tính", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Function", "Hàm", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Fundamental", "Cơ bản", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Gateway", "Cổng kết nối internet", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Input", "Đầu vào", "(v,n)", "ˈakˌses"));
+                            tagsList.add(new Word("Instruction", "Thiết bị", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Device", "Chỉ dẫn", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Multiplexor", "Bộ dồn kênh", "(n)", "ˈakˌses"));
+                            tagsList.add(new Word("Memory", "Bộ nhớ", "(n)", "ˈakˌses"));
+                            for (Word i : tagsList) {
+                                getApplicationComponent().dbHelper().saveWord(i).subscribe();
+                            }
+                        }
+
+                    }
+                });
+
+
+    }
+
+    private void generateCodeTest() {
+        System.out.println("GENERATE");
+        getApplicationComponent().dbHelper().listAllCodeTest().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<CodeTest>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<CodeTest> toDos) {
+                        if (toDos.size() == 0) {
+                            List<CodeTest> tagsList = new ArrayList<>();
+                            for (int i = 0; i < 5; i++) {
+                                tagsList.add(new CodeTest("Bộ đề " + (i + 1), "CODE_" + (i + 1)));
+                            }
+
+                            for (CodeTest i : tagsList) {
+                                getApplicationComponent().dbHelper().saveCodeTest(i).subscribe();
+                            }
+                        }
+
+                    }
+                });
+    }
+
+    private void generateTest(){
+        getApplicationComponent().dbHelper().listAllCodeTest().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<CodeTest>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<CodeTest> toDos) {
+                        if (toDos.size() == 0) {
+                            List<Test> tagsList = new ArrayList<>();
+                            tagsList.add(new Test("CODE_1","Từ nào sau đây là nghĩa tiếng việt của hệ điều hành"
+                                    ,"Operating system",
+                                    "Opeting system",
+                                    "Operatong systems",
+                                    "Operirting system",
+                                    "Operating system"));
+                            tagsList.add(new Test("CODE_1","Từ nào sau đây chỉ đa người dùng"
+                                    ,"Mullti-user",
+                                    "Multity-user",
+                                    "Multi-user",
+                                    "Multitaly-user",
+                                    "Mullti-user"));
+                            tagsList.add(new Test("CODE_1",
+                                    "Nghĩa tiếng anh nào sau đây chỉ dữ liệu kiểu số trong công nghệ thông tin"
+                                    ,"Alphenumeric database",
+                                    "Allphanumeric data",
+                                    "Alphanstiumeric data",
+                                    "Alphanumeric data",
+                                    "Alphanumeric data"));
+                            tagsList.add(new Test("CODE_1",
+                                    "Từ tiếng anh nào mang nghĩa bộ điều khiển trùm"
+                                    ,"Clustery controler",
+                                    "Cluster controller",
+                                    "Clusters controler",
+                                    "Closter controller",
+                                    "Cluster controller"));
+                            tagsList.add(new Test("CODE_1","Từ nào sau đây là nghĩa cổng kết nối internet cho những mạng lớn"
+                                    ,"Gateway","Gaterway","Geteway","Gaterways","Gateway"));
+                            tagsList.add(new Test("CODE_1","Gói dữ liệu được viết như sau trong công nghệ trong tin"
+                                    ,"Pascket","Packeter","Packet","Pecket","Packet"));
+                            tagsList.add(new Test("CODE_1","Đâu là tên tiếng anh của từ mã nguồn"
+                                    ,"Sources Code","Source Code","Souresce Code","Surce Code","Source Code"));
+                            tagsList.add(new Test("CODE_1","Cổng trong tiếng anh chuyên ngành công nghệ thông tin được viết như thế nào"
+                                    ,"Ports","Porter","Port","Porty","Port"));
+                            tagsList.add(new Test("CODE_1","Từ nào sau đây chỉ ra công tác biên mục theo chuyên ngành công nghệ thông tin"
+                                    ,"Catelogong","Caterloging","Cataloging","Catalogrings","Cataloging"));
+                            tagsList.add(new Test("CODE_1","Từ nào sau đây mang nghĩa thẻ chủ đề"
+                                    ,"Subsject entry","Subjected entry","Subject entry","Subject entrys","Subject entry"));
+                            for (Test i : tagsList) {
+                                getApplicationComponent().dbHelper().saveTest(i).subscribe();
+                            }
+                        }
+
+                    }
+                });
     }
 
 

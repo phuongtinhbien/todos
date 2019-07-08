@@ -23,21 +23,51 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".domains.tags.TagsActivity_" />
-        <meta-data
-            android:name="net.hockeyapp.android.appIdentifier"
-            android:value="${HOCKEYAPP_APP_ID}" />
-
-        <activity android:name=".domains.createTask.CreateTaskActivity_" />
-        <activity android:name=".domains.main.MainActivity_">
+        <activity
+            android:name=".domains.mainEnglish.MainEnglishActivity"
+            android:label="@string/title_activity_main_english"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".domains.tags.TagsActivity_" />
 
+        <meta-data
+            android:name="net.hockeyapp.android.appIdentifier"
+            android:value="${HOCKEYAPP_APP_ID}" />
+
+        <activity android:name=".domains.createTask.CreateTaskActivity_" />
+        <activity android:name=".domains.main.MainActivity_">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
         <activity android:name=".domains.settings.SettingsActivity_" />
+        <activity android:name=".domains.word.WordActivity_"
+            android:theme="@style/AppTheme"
+            android:label="Từ vựng"
+            android:parentActivityName=".domains.mainEnglish.MainEnglishActivity"/>
+        <activity android:name=".domains.write.WriteActivity_"
+            android:theme="@style/AppTheme"
+            android:label="Luyện viết"
+            android:parentActivityName=".domains.mainEnglish.MainEnglishActivity"/>
+        <activity android:name=".domains.listen.ListenActivity_"
+            android:theme="@style/AppTheme"
+            android:label="Luyện nghe"
+            android:parentActivityName=".domains.mainEnglish.MainEnglishActivity"/>
+        <activity android:name=".domains.codeTest.CodeTestActivity_"
+            android:theme="@style/AppTheme"
+            android:label="Bộ đề"
+            android:parentActivityName=".domains.mainEnglish.MainEnglishActivity"/>
+        <activity android:name=".domains.test.TestActivity_"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".domains.mainEnglish.MainEnglishActivity"/>
+        <service android:name=".services.StartService" />
     </application>
 
 </manifest>

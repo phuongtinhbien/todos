@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:elevation="0dp"
+    android:clickable="true"
+    android:foreground="?selectableItemBackground"
+    app:cardElevation="0dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp">
+        <TextView
+            android:id="@+id/tvWordPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="18dp"
+            android:fontFamily="sans-serif-black"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:padding="14dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toStartOf="@id/civVoice"
+            android:layout_toEndOf="@id/tvWordPosition">
+            <TextView
+                android:id="@+id/tvWord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="#47ADFF"
+                android:text="Call: gọi điện"
+                />
+            <TextView
+                android:id="@+id/tvWordPronoun"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:text="Call: gọi điện"
+                />
+
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/civVoice"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_volume_up_black_24dp"
+            android:scaleType="centerInside"
+            android:layout_centerVertical="true"
+            android:background="@drawable/circle_blue"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:background="@color/gray_background"
+        android:layout_marginHorizontal="24dp"/>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:elevation="0dp"
+    android:foreground="?selectableItemBackground"
+    android:clickable="true"
+    app:cardElevation="0dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp">
+        <ImageView
+            android:id="@+id/tvWordPosition"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:fontFamily="sans-serif-black"
+            android:layout_centerVertical="true"
+
+            android:src="@drawable/ic_star_black_24dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tvWordPosition">
+            <TextView
+                android:id="@+id/tvCodeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:textColor="#000000"
+                android:text="Call: gọi điện"
+                />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:background="@color/gray_background"
+        android:layout_marginHorizontal="24dp"/>
+
+</androidx.cardview.widget.CardView>

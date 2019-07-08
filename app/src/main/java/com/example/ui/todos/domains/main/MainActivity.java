@@ -6,6 +6,12 @@ import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+
 import com.example.ui.todos.MainApplication;
 import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.ToDo;
@@ -26,12 +32,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 
 @EActivity(R.layout.activity_main)
@@ -134,12 +134,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     private void updateUI() {
         if (toDos != null && toDos.size() != 0) {
             listener = (viewHolder, direction, position) -> {
-                        final ToDo deletedItem = toDos.get(viewHolder.getAdapterPosition());
-                        toDoListAdapter.removeItem(viewHolder.getAdapterPosition());
-                        this.toDos.remove(deletedItem);
-                        presenter.deleteToDo(deletedItem);
-                        updateUI();
-                    };
+                final ToDo deletedItem = toDos.get(viewHolder.getAdapterPosition());
+                toDoListAdapter.removeItem(viewHolder.getAdapterPosition());
+                this.toDos.remove(deletedItem);
+                presenter.deleteToDo(deletedItem);
+                updateUI();
+            };
             itemTouchHelperCallback = new SwipeToDeleteCallback(0, ItemTouchHelper.UP, listener);
             new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(todoList);
             createTask.setVisibility(View.VISIBLE);
