@@ -44,6 +44,7 @@ public class MainEnglishActivity extends AppCompatActivity
     LinearLayout llListen;
     LinearLayout llWrite;
     LinearLayout llTest;
+    NavigationView navigationView;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
 
@@ -60,7 +61,7 @@ public class MainEnglishActivity extends AppCompatActivity
         llWrite = findViewById(R.id.llWrite);
         llTest = findViewById(R.id.llTest);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -108,6 +109,10 @@ public class MainEnglishActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
             signIn();
+        } else if (id == R.id.nav_logout){
+            FirebaseAuth.getInstance().signOut();
+            navigationView.getMenu().getItem(1).setVisible(true);
+            navigationView.getMenu().getItem(2).setVisible(false);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -145,6 +150,11 @@ public class MainEnglishActivity extends AppCompatActivity
         if (currentUser != null){
             Toast.makeText(MainEnglishActivity.this, "Đăng nhập thành công \n" +
                     "Xin chào " + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+            navigationView.getMenu().getItem(1).setVisible(false);
+            navigationView.getMenu().getItem(2).setVisible(true);
+        } else {
+            navigationView.getMenu().getItem(1).setVisible(true);
+            navigationView.getMenu().getItem(2).setVisible(false);
         }
     }
 
@@ -163,6 +173,8 @@ public class MainEnglishActivity extends AppCompatActivity
                             Toast.makeText(MainEnglishActivity.this, "Đăng nhập thành công \n" +
                                     "Xin chào " + mAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
+                            navigationView.getMenu().getItem(1).setVisible(false);
+                            navigationView.getMenu().getItem(2).setVisible(true);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

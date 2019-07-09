@@ -1,11 +1,9 @@
 package com.example.ui.todos.domains.test;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,9 +16,13 @@ import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.Test;
 import com.example.ui.todos.domains.base.BaseActivity;
 import com.example.ui.todos.domains.word.WordListAdapter;
-import com.example.ui.todos.ultil.AudioPlayer;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -29,9 +31,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -52,7 +53,8 @@ public class TestActivity extends BaseActivity<TestView, TestPresenter> implemen
 
     @ViewById(R.id.btnCheck)
     MaterialButton btnCheck;
-
+    @ViewById (R.id.tvOldPoint)
+    TextView tvOldPoint;
 
     @ViewById(R.id.one)
     RadioButton one;
@@ -73,6 +75,8 @@ public class TestActivity extends BaseActivity<TestView, TestPresenter> implemen
     private String code;
     private String codeName;
     private FirebaseAuth mAuth;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("user");
 
     @AfterInject
     void inject() {
@@ -92,13 +96,35 @@ public class TestActivity extends BaseActivity<TestView, TestPresenter> implemen
     @SuppressLint("ClickableViewAccessibility")
     @AfterViews
     void init() {
-
+        Intent intent = getIntent();
+        code = intent.getStringExtra("codeTest");
         one.setOnClickListener(this);
         two.setOnClickListener(this);
         three.setOnClickListener(this);
         four.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
-        tvName.setText(mAuth.getCurrentUser().getDisplayName());
+        if (mAuth.getCurrentUser() != null) {
+            tvName.setText(mAuth.getCurrentUser().getDisplayName());
+
+                myRef.child(mAuth.getUid()).child("test").child(code).orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                        tvOldPoint.setText(String.format("Điểm cũ: %s đ",
+                                dataSnapshot.getChildren().iterator().next().child("point").getValue().toString()));
+                        }catch (Exception e) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+        }
     }
 
     @Click(R.id.btnCheck)
@@ -121,11 +147,13 @@ public class TestActivity extends BaseActivity<TestView, TestPresenter> implemen
                 builder1.setCancelable(true);
                 builder1.setPositiveButton(
                         "Kết thúc",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                                onBackPressed();
+                        (dialog, id) -> {
+                            dialog.cancel();
+                            if (mAuth.getCurrentUser() != null) {
+                                myRef.child(mAuth.getUid()).child("test").child(code)
+                                        .child(Calendar.getInstance().getTime().getTime() + "").child("point").setValue(point);
                             }
+                            onBackPressed();
                         });
 
                 AlertDialog alert11 = builder1.create();
@@ -150,7 +178,7 @@ public class TestActivity extends BaseActivity<TestView, TestPresenter> implemen
 
     @Override
     public void showListWord(List<Test> words) {
-        if (words.size()>0){
+        if (words.size() > 0) {
             this.tests = words;
             initAnswer();
             tvWord.setText(words.get(position).getQuestion());

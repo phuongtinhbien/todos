@@ -1,31 +1,31 @@
 package com.example.ui.todos.domains.listen;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.ui.todos.MainApplication;
 import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.Word;
 import com.example.ui.todos.domains.base.BaseActivity;
-import com.example.ui.todos.domains.word.WordListAdapter;
 import com.example.ui.todos.ultil.AudioPlayer;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -35,6 +35,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -54,6 +55,8 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
     TextView tvPoint;
     @ViewById(R.id.tvWord)
     ImageView tvWord;
+    @ViewById (R.id.tvOldPoint)
+    TextView tvOldPoint;
 
     @ViewById(R.id.btnCheck)
     MaterialButton btnCheck;
@@ -68,14 +71,14 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
     @ViewById(R.id.four)
     RadioButton four;
 
-    private WordListAdapter adapter;
     private List<Word> words;
     private int position = 0;
     private int point = 0;
-    private List<String> answers;
 
     private String answer = "";
     private FirebaseAuth mAuth;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("user");
 
     @AfterInject
     void inject() {
@@ -96,9 +99,32 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
         three.setOnClickListener(this);
         four.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
-        tvName.setText(mAuth.getCurrentUser().getDisplayName());
+        if (mAuth.getCurrentUser() != null) {
+            tvName.setText(mAuth.getCurrentUser().getDisplayName());
+
+
+                myRef.child(mAuth.getUid()).child("listen").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                        tvOldPoint.setText(String.format("Điểm cũ: %s đ",
+                                dataSnapshot.getChildren().iterator().next().child("point").getValue().toString()));
+                        } catch (Exception e) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+        }
     }
 
+    @SuppressLint("DefaultLocale")
     @Click(R.id.btnCheck)
     public void check() {
         if (answer.equals("")) {
@@ -112,7 +138,7 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
             }
             position++;
             if (position >= 10) {
-                tvPoint.setText(point + " đ");
+                tvPoint.setText(String.format("%d đ", point));
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
                 builder1.setTitle("Bạn đã hoàn tất");
                 builder1.setMessage("Kết quả: " + point + " diểm");
@@ -120,11 +146,13 @@ public class ListenActivity extends BaseActivity<ListenView, ListenPresenter> im
 
                 builder1.setPositiveButton(
                         "Kết thúc",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                                onBackPressed();
+                        (dialog, id) -> {
+                            dialog.cancel();
+                            if (mAuth.getCurrentUser() != null) {
+                                myRef.child(mAuth.getUid()).child("listen")
+                                        .child(Calendar.getInstance().getTime().getTime() + "").child("point").setValue(point);
                             }
+                            onBackPressed();
                         });
 
                 AlertDialog alert11 = builder1.create();
