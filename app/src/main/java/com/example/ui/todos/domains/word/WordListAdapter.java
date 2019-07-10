@@ -40,15 +40,26 @@ public class WordListAdapter extends RecyclerView.Adapter<WordViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
-        holder.word.setText(String.format("%s: %s", wordList.get(position).getWord().trim(),
-                wordList.get(position).getMean()));
-        holder.position.setText((position+1)+"");
-        holder.pronoun.setText(wordList.get(position).getType()+" "+wordList.get(position).getPro());
-        holder.voice.setOnClickListener(v->{
-            int id = context.getResources().getIdentifier(wordList.get(position).getWord().toLowerCase().replace('-','_').trim(),
-                    "raw", context.getPackageName());
-            AudioPlayer.play(context,id);
-        });
+        try {
+            holder.word.setText(String.format("%s: %s", wordList.get(position).getWord().trim(),
+                    wordList.get(position).getMean()));
+            holder.position.setText((position+1)+"");
+            holder.pronoun.setText(wordList.get(position).getType()+" "+wordList.get(position).getPro());
+            holder.voice.setOnClickListener(v->{
+                if (wordList.get(position).getVoice() != null && wordList.get(position).getVoice() != ""){
+
+                    AudioPlayer.play(context,wordList.get(position).getVoice());
+                } else {
+                    int id = context.getResources().getIdentifier(wordList.get(position).getWord().toLowerCase().replace('-','_').trim(),
+                            "raw", context.getPackageName());
+                    AudioPlayer.play(context,id);
+                }
+
+            });
+        } catch (Exception e) {
+
+        }
+
     }
 
     @Override

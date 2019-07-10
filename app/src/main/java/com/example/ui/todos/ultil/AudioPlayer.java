@@ -2,6 +2,7 @@ package com.example.ui.todos.ultil;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 
 public class AudioPlayer {
 
@@ -18,12 +19,17 @@ public class AudioPlayer {
         stop();
 
         mMediaPlayer = MediaPlayer.create(c, rid);
-        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                stop();
-            }
-        });
+        mMediaPlayer.setOnCompletionListener(mediaPlayer -> stop());
+
+        mMediaPlayer.start();
+    }
+
+    public static void play(Context c, String url) {
+        stop();
+
+        Uri uri = Uri.parse(url);
+        mMediaPlayer = MediaPlayer.create(c, uri);
+        mMediaPlayer.setOnCompletionListener(mediaPlayer -> stop());
 
         mMediaPlayer.start();
     }

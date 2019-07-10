@@ -21,6 +21,9 @@ public class Word {
     @ColumnInfo (name = "pro")
     private String pro;
 
+    @ColumnInfo (name="voice")
+    private String voice;
+
 
     public Word(String word, String mean, String type, String pro) {
         this.word = word;
@@ -70,5 +73,13 @@ public class Word {
     }
 
     public Word() {
+    }
+
+    public String getVoice() {
+        return voice;
+    }
+
+    public void setVoice(String voice) {
+        this.voice = voice;
     }
 }
