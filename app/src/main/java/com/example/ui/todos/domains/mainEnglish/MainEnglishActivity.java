@@ -14,6 +14,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.ui.todos.MainApplication;
+import com.example.ui.todos.MainApplication_;
 import com.example.ui.todos.R;
 import com.example.ui.todos.db.model.Word;
 import com.example.ui.todos.domains.codeTest.CodeTestActivity_;
@@ -172,6 +174,8 @@ public class MainEnglishActivity extends AppCompatActivity
                         }
                     });
 
+        } else if (id == R.id.nav_update) {
+            ((MainApplication_) getApplication()).initData();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -51,4 +51,6 @@ public interface DBHelper {
     Observable<List<CodeTest>> listAllCodeTest();
     Observable<Boolean> saveCodeTest(CodeTest toDo);
 
+    Observable<Boolean> deleteData();
+
 }

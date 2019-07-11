@@ -26,5 +26,8 @@ public interface CodeDao {
     @Delete()
     void delete(CodeTest... deleteItem);
 
+    @Query("DELETE FROM CODE_TABLE")
+    void nukeTable();
+
 
 }

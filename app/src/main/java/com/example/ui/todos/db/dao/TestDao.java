@@ -34,4 +34,6 @@ public interface TestDao {
     @Delete()
     void delete(Test... deleteItem);
 
+    @Query("DELETE FROM TEST_TABLE")
+    void nukeTable();
 }

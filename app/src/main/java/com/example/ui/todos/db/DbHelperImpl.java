@@ -171,4 +171,15 @@ public class DbHelperImpl implements DBHelper {
         }).subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Observable<Boolean> deleteData() {
+        return Observable.fromCallable(() ->{
+            db.codeTestDao().nukeTable();
+            db.testDao().nukeTable();
+            db.wordDao().nukeTable();
+            return true;
+        }).subscribeOn(Schedulers.io());
+    }
+
+
 }

@@ -91,6 +91,18 @@ public class MainApplication extends MultiDexApplication {
         checkForCrashes();
         initSharePreference();
         configTheme();
+        initData();
+
+    }
+
+    public void initData (){
+
+        getApplicationComponent().dbHelper().deleteData().observeOn(AndroidSchedulers.mainThread());
+
+        generateTags();
+        checkForCrashes();
+        initSharePreference();
+        configTheme();
         generateWord();
         generateCodeTest();
         generateTest();
@@ -147,7 +159,6 @@ public class MainApplication extends MultiDexApplication {
             });
             editor.putBoolean("loaded", true);
         }
-
     }
 
 
@@ -305,7 +316,7 @@ public class MainApplication extends MultiDexApplication {
                     public void onNext(List<CodeTest> toDos) {
                         if (toDos.size() == 0) {
                             List<CodeTest> tagsList = new ArrayList<>();
-                            for (int i = 0; i < 5; i++) {
+                            for (int i = 0; i < 1; i++) {
                                 tagsList.add(new CodeTest("Bộ đề " + (i + 1), "CODE_" + (i + 1)));
                             }
 

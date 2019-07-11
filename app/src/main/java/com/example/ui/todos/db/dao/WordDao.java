@@ -36,4 +36,6 @@ public interface WordDao {
     @Delete()
     void delete(Word... deleteItem);
 
+    @Query("DELETE FROM WORD_TABLE")
+    void nukeTable();
 }
