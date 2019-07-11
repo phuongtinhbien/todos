@@ -25,6 +25,7 @@
             android:textAllCaps="false"
             android:textColor="#000000"
             android:textSize="16dp" />
+
         <TextView
             android:id="@+id/tvOldPoint"
             style="@style/Widget.AppCompat.Button.Borderless"
@@ -63,19 +64,19 @@
             android:scaleType="centerCrop"
             android:src="@drawable/wite" />
 
-    <TextView
-        android:id="@+id/tvWord"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="4dp"
-        android:background="@color/white"
-        android:padding="16dp"
-        android:text="Máy tính"
-        android:textAllCaps="false"
-        android:textColor="@color/darkblue"
-        android:textSize="24dp" />
+        <TextView
+            android:id="@+id/tvWord"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="4dp"
+            android:background="@color/white"
+            android:padding="16dp"
+            android:text="Máy tính"
+            android:textAllCaps="false"
+            android:textColor="@color/darkblue"
+            android:textSize="24dp" />
     </FrameLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -93,58 +94,72 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         android:orientation="vertical">
-        <GridLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:alignmentMode="alignBounds"
+            android:alignmentMode="alignMargins"
             android:columnCount="2"
-            android:rowCount="2">
+            android:orientation="horizontal"
+            android:rowCount="2"
+            android:weightSum="2">
 
             <RadioButton
                 android:id="@+id/one"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_row="0"
                 android:layout_rowWeight="1"
                 android:layout_column="0"
                 android:layout_columnWeight="1"
                 android:layout_margin="4dp"
+                android:layout_weight="1"
                 android:background="@drawable/shape_white_corner"
                 android:text="Answer 1" />
 
             <RadioButton
                 android:id="@+id/two"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_row="0"
                 android:layout_rowWeight="1"
-                android:layout_column="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="4dp"
+                android:layout_weight="1"
                 android:background="@drawable/shape_white_corner"
                 android:text="Answer 1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alignmentMode="alignMargins"
+            android:orientation="horizontal"
+            android:rowCount="2"
+            android:weightSum="2">
 
             <RadioButton
                 android:id="@+id/three"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="4dp"
+                android:layout_weight="1"
                 android:background="@drawable/shape_white_corner"
                 android:text="Answer 1" />
 
             <RadioButton
                 android:id="@+id/four"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="4dp"
+                android:layout_weight="1"
                 android:background="@drawable/shape_white_corner"
                 android:text="Answer 1" />
-        </GridLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

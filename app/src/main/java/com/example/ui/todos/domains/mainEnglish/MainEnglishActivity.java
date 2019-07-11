@@ -15,6 +15,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.ui.todos.R;
+import com.example.ui.todos.db.model.Word;
 import com.example.ui.todos.domains.codeTest.CodeTestActivity_;
 import com.example.ui.todos.domains.listen.ListenActivity_;
 import com.example.ui.todos.domains.word.WordActivity_;
@@ -34,6 +35,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainEnglishActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,6 +53,8 @@ public class MainEnglishActivity extends AppCompatActivity
     NavigationView navigationView;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("user");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +114,49 @@ public class MainEnglishActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            String shareBody = "";
+            final int[] point = new int[3];
+            if ( mAuth.getCurrentUser() != null) {
+                myRef.child(mAuth.getUid()).child("listen").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                            point[0] = (int) dataSnapshot.getChildren().iterator().next().child("point").getValue();
+                        } catch (Exception e) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                myRef.child(mAuth.getUid()).child("write").orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                            point[1] = (int) dataSnapshot.getChildren().iterator().next().child("point").getValue();
+                        } catch (Exception e) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                shareBody = "Điểm Listen: "+ point[0] +"\n";
+                shareBody = shareBody + "Điểm Writing: "+ point[1];
+            }
+            shareBody = shareBody+"\n";
+            String shareSub = "Share điểm";
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareSub);
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "Chia sẻ với"));
         } else if (id == R.id.nav_gallery) {
             signIn();
         } else if (id == R.id.nav_logout){
