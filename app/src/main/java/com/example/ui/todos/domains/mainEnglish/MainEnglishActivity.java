@@ -20,10 +20,12 @@ import com.example.ui.todos.domains.codeTest.CodeTestActivity_;
 import com.example.ui.todos.domains.listen.ListenActivity_;
 import com.example.ui.todos.domains.word.WordActivity_;
 import com.example.ui.todos.domains.write.WriteActivity_;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -161,8 +163,15 @@ public class MainEnglishActivity extends AppCompatActivity
             signIn();
         } else if (id == R.id.nav_logout){
             FirebaseAuth.getInstance().signOut();
-            navigationView.getMenu().getItem(1).setVisible(true);
-            navigationView.getMenu().getItem(2).setVisible(false);
+            mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                    new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            navigationView.getMenu().getItem(1).setVisible(true);
+                            navigationView.getMenu().getItem(2).setVisible(false);
+                        }
+                    });
+
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -180,12 +189,13 @@ public class MainEnglishActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+                GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
+            } catch (Exception e) {
                 // Google Sign In failed, update UI appropriately
                 // ...
             }
