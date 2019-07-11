@@ -1,6 +1,7 @@
 package com.example.ui.todos;
 
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.multidex.MultiDexApplication;
@@ -97,7 +98,22 @@ public class MainApplication extends MultiDexApplication {
 
     public void initData (){
 
-        getApplicationComponent().dbHelper().deleteData().observeOn(AndroidSchedulers.mainThread());
+        getApplicationComponent().dbHelper().deleteData().observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Boolean>() {
+            @Override
+            public void onCompleted() {
+                Toast.makeText(MainApplication.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+
+            }
+        });
 
         generateTags();
         checkForCrashes();

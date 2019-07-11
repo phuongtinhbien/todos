@@ -139,7 +139,7 @@ public class TestActivity extends BaseActivity<TestView, TestPresenter> implemen
                 Toast.makeText(application, "Đáp án không chính xác", Toast.LENGTH_SHORT).show();
             }
             position++;
-            if (position >= tests.size()) {
+            if (position >= tests.size()-1) {
                 tvPoint.setText(point + " đ");
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
                 builder1.setTitle("Bạn đã hoàn tất");
@@ -155,7 +155,17 @@ public class TestActivity extends BaseActivity<TestView, TestPresenter> implemen
                             }
                             onBackPressed();
                         });
-
+                builder1.setNegativeButton("Chia sẻ",
+                        ((dialog, which) -> {
+                            dialog.cancel();
+                            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                            sharingIntent.setType("text/plain");
+                            String shareBody = "Điểm trắc nghiệm - "+ codeName + " : " + point + "đ";
+                            String shareSub = "Share điểm";
+                            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareSub);
+                            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                            startActivity(Intent.createChooser(sharingIntent, "Chia sẻ với"));
+                        }));
                 AlertDialog alert11 = builder1.create();
                 alert11.show();
             } else {
